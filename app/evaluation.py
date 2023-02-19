@@ -28,7 +28,7 @@ def evaluation_function(response, answer, params):
     return types and that evaluation_function() is the main function used 
     to output the evaluation response.
     """
-    openai.api_key = os.environ["OPENAI_API_KEY"]
+    openai.api_key = os.environ.get('OPENAI_API_KEY')
 
     if type(openai.api_key)==str:
         return {"is_correct": True,"feedback":"string","warnings": ""}
