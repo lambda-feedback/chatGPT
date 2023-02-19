@@ -30,18 +30,18 @@ def evaluation_function(response, answer, params):
     """
     openai.api_key = os.environ.get('OPENAI_API_KEY')
 
-    if type(openai.api_key)==str:
-        return {"is_correct": True,"feedback":"string","warnings": ""}
-    else:
-        return {"is_correct": True,"feedback":"not a string","warnings": ""}
+    # if type(openai.api_key)==str:
+    #     return {"is_correct": True,"feedback":"string","warnings": ""}
+    # else:
+    #     return {"is_correct": True,"feedback":"not a string","warnings": ""}
 
-#     prompt = "Compare the `response` to the `answer` considering the `params`. Output your answer in exactly and only the following format: \n{{\n\"command\": \"eval\",\n\"result\":{{\n\"is_correct\": \"<bool>\",\n\"feedback\":\"<string>\",\n\"warnings\": \"<array>\"\n}}\n}} \n Answer: {}. \n Response: {}. \n params: {}. \n Only provide corrective or suggestive feedback. Don't provide any subjective, emotional, or motivational feedback (such as exclamation marks or 'well done'). Don't reveal the true answer if it wasn't given in the response.".format(response,answer,params)
+    prompt = "Compare the `response` to the `answer` considering the `params`. Output your answer in exactly and only the following format: \n{{\n\"command\": \"eval\",\n\"result\":{{\n\"is_correct\": \"<bool>\",\n\"feedback\":\"<string>\",\n\"warnings\": \"<array>\"\n}}\n}} \n Answer: {}. \n Response: {}. \n params: {}. \n Only provide corrective or suggestive feedback. Don't provide any subjective, emotional, or motivational feedback (such as exclamation marks or 'well done'). Don't reveal the true answer if it wasn't given in the response.".format(response,answer,params)
 
-#     response = openai.Completion.create(
-#     engine="text-davinci-002",
-#     prompt=prompt,
-#     max_tokens=1024,
-# )
+    response = openai.Completion.create(
+    engine="text-davinci-002",
+    prompt=prompt,
+    max_tokens=1024,
+)
 
-#     return json.loads(response.choices[0].to_dict()["text"].replace("\n",""))["result"]
+    return json.loads(response.choices[0].to_dict()["text"].replace("\n",""))["result"]
     #return {"is_correct": True, "feedback": "No response submitted."}
