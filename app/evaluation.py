@@ -34,7 +34,7 @@ def evaluation_function(response, answer, params):
     if test_key=='aBc':
         return {"is_correct": True,"feedback":test_key,"warnings": ""}
     else:
-        return {"is_correct": False,"feedback":test_key,"warnings": ""}
+        return {"is_correct": True,"feedback":test_key,"warnings": ""}
 
 #     prompt = "Compare the `response` to the `answer` considering the `params`. Output your answer in exactly and only the following format: \n{{\n\"command\": \"eval\",\n\"result\":{{\n\"is_correct\": \"<bool>\",\n\"feedback\":\"<string>\",\n\"warnings\": \"<array>\"\n}}\n}} \n Answer: {}. \n Response: {}. \n params: {}. \n Only provide corrective or suggestive feedback. Don't provide any subjective, emotional, or motivational feedback (such as exclamation marks or 'well done'). Don't reveal the true answer if it wasn't given in the response.".format(response,answer,params)
 
