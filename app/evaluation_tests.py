@@ -5,13 +5,14 @@ try:
 except ImportError:
     from evaluation import evaluation_function
 
+
 class TestEvaluationFunction(unittest.TestCase):
     """
         TestCase Class used to test the algorithm.
         ---
         Tests are used here to check that the algorithm written 
         is working as it should. 
-        
+
         It's best practise to write these tests first to get a 
         kind of 'specification' for how your algorithm should 
         work, and you should run these tests before committing 
@@ -23,11 +24,25 @@ class TestEvaluationFunction(unittest.TestCase):
         Use evaluation_function() to check your algorithm works 
         as it should.
     """
-    def test_returns_is_correct_true(self):
-        response, answer, params = "True", "True", dict()
-        result = evaluation_function(response, answer, params)
-        
-        self.assertEqual(result.get("is_correct"), True)
+
+    def test_compare_x_with_x(self):
+        response, answer, params = "x", "x", dict()
+        result = evaluation_function(
+            response, answer, {"mode": "If the reponse is similar to the answer then the response is correct."})
+        self.assertEqual(bool(result["result"]["is_correct"]), True)
+
+    def test_compare_ketchup_and_red_sauce(self):
+        response, answer, params = "ketchup", "red suace", dict()
+        result = evaluation_function(
+            response, answer, {"mode": "If the reponse is similar to the answer then the response is correct."})
+        self.assertEqual(bool(result["result"]["is_correct"]), True)
+
+    def test_compare_coal_and_red_sauce(self):
+        response, answer, params = "not red sauce", "red suace", dict()
+        result = evaluation_function(
+            response, answer, {"mode": "If the reponse is similar to the answer then the response is correct."})
+        self.assertEqual(bool(result["result"]["is_correct"]), False)
+
 
 if __name__ == "__main__":
     unittest.main()
