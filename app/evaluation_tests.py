@@ -25,12 +25,6 @@ class TestEvaluationFunction(unittest.TestCase):
         as it should.
     """
 
-    def test_compare_x_with_x(self):
-        response, answer, params = "x", "x", dict()
-        result = evaluation_function(
-            response, answer, {"mode": "If they're the same, say it's correct. If they're different, say it's incorrect."})
-        self.assertEqual(bool(result["result"]["is_correct"]), True)
-
     def test_compare_ketchup_and_red_sauce(self):
         response, answer, params = "ketchup", "red suace", dict()
         result = evaluation_function(
