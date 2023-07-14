@@ -50,3 +50,4 @@ if __name__ == "__main__":
         response, answer, {"mode": "If the reponse is similar to the answer then the response is correct."})
     result["result"]["is_correct"] = bool(result["result"]["is_correct"])
     print(bool(result["result"]["is_correct"]))
+    print(result)

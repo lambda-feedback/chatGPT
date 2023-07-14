@@ -40,7 +40,7 @@ class TestEvaluationFunction(unittest.TestCase):
     def test_compare_coal_and_red_sauce(self):
         response, answer, params = "not red sauce", "red suace", dict()
         result = evaluation_function(
-            response, answer, {"mode": "If the reponse is similar to the answer then the response is correct."})
+            response, answer, {"mode": "If the reponse is the same as the answer then the response is correct."})
         self.assertEqual(bool(result["result"]["is_correct"]), False)
 
 
