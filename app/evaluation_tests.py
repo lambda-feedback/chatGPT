@@ -28,19 +28,19 @@ class TestEvaluationFunction(unittest.TestCase):
     def test_compare_x_with_x(self):
         response, answer, params = "x", "x", dict()
         result = evaluation_function(
-            response, answer, {"mode": "If the reponse is similar to the answer then the response is correct."})
+            response, answer, {"mode": "If they're the same, say it's correct. If they're different, say it's incorrect."})
         self.assertEqual(bool(result["result"]["is_correct"]), True)
 
     def test_compare_ketchup_and_red_sauce(self):
         response, answer, params = "ketchup", "red suace", dict()
         result = evaluation_function(
-            response, answer, {"mode": "If the reponse is similar to the answer then the response is correct."})
+            response, answer, {"mode": "If they're the same, say it's correct. If they're different, say it's incorrect."})
         self.assertEqual(bool(result["result"]["is_correct"]), True)
 
     def test_compare_coal_and_red_sauce(self):
-        response, answer, params = "not red sauce", "red suace", dict()
+        response, answer, params = "green", "red suace", dict()
         result = evaluation_function(
-            response, answer, {"mode": "If the reponse is the same as the answer then the response is correct."})
+            response, answer, {"mode": "If they're the same, say it's correct. If they're different, say it's incorrect."})
         self.assertEqual(bool(result["result"]["is_correct"]), False)
 
 
