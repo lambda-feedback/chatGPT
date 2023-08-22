@@ -5,17 +5,14 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-
-def evaluation_function(response, answer, params):
+def evaluation_function(prompt, response):
     """
     Function used to evaluate a student response.
     ---
     The handler function passes three arguments to evaluation_function():
 
-    - `response` which are the answers provided by the student.
-    - `answer` which are the correct answers to compare against.
-    - `params` which are any extra parameters that may be useful,
-        e.g., error tolerances.
+    - `prompt' which contains the system prompt, written by the teacher.
+    - `response` which contains the student's answer.
 
     The output of this function is what is returned as the API response 
     and therefore must be JSON-encodable. It must also conform to the 
@@ -29,25 +26,13 @@ def evaluation_function(response, answer, params):
     return types and that evaluation_function() is the main function used 
     to output the evaluation response.
     """
-    openai.api_key = os.environ.get("OPENAI_API_KEY")
+    openai.api_key = "sk-"
 
-    prompt = "Compare the `response` to the `answer` considering the `params`. Output your answer in exactly and only the following format: \n{{\n\"command\": \"eval\",\n\"result\":{{\n\"is_correct\": \"<bool>\",\n\"feedback\":\"<string>\",\n\"warnings\": \"<array>\"\n}}\n}} \n Answer: {}. \n Response: {}. \n params: {}. \n Only provide corrective or suggestive feedback. Don't provide any subjective, emotional, or motivational feedback (such as exclamation marks or 'well done'). Don't reveal the true answer if it wasn't given in the response. Be objective. Justify the judgement.".format(
-        response, answer, params)
-
-    response = openai.Completion.create(
-        engine="text-davinci-003",
-        prompt=prompt,
-        max_tokens=1024,
+    completion = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=[{"role": "system", "content": prompt},
+            {"role": "user", "content": response}]
     )
 
-    return json.loads(response["choices"][0]["text"])
-
-
-if __name__ == "__main__":
-    response, answer = "ketchup", "red sauce"
-    print(response, answer)
-    result = evaluation_function(
-        response, answer, {"mode": "If the reponse is similar to the answer then the response is correct."})
-    result["result"]["is_correct"] = bool(result["result"]["is_correct"])
-    print(bool(result["result"]["is_correct"]))
-    print(result)
+    chat_response = completion.choices[0].message.content
+    return chat_response
