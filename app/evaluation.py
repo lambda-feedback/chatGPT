@@ -26,7 +26,7 @@ def evaluation_function(prompt, response):
     return types and that evaluation_function() is the main function used 
     to output the evaluation response.
     """
-    openai.api_key = "sk-"
+    openai.api_key = "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"
 
     completion = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",

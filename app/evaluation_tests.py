@@ -29,7 +29,9 @@ class TestEvaluationFunction(unittest.TestCase):
     def test_risk(self):
         prompt = "The student needs to enter a valid risk with a short description of how it can cause harm" + default_prompt
         response = "The sun becuase UV rays can cause damage"
-        result = evaluation_function(response, prompt)
-        
+        result = evaluation_function(prompt, response)
+        print(result)
 
+if __name__ == "__main__":
+    unittest.main()
     
