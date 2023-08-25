@@ -5,6 +5,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+formatting_prompt = "Output your answer in exactly and only the following format: {\n'is_correct': <bool>,\n'feedback':'<string>',\n'warnings': <array>}. Follow the python syntax rules in this output."
+
 def evaluation_function(response, prompt, parameters):
     """
     Function used to evaluate a student response.
@@ -31,7 +33,7 @@ def evaluation_function(response, prompt, parameters):
 
     completion = openai.ChatCompletion.create(
         model = parameters['model'],
-        messages = [{"role": "system", "content": prompt},
+        messages = [{"role": "system", "content": prompt + formatting_prompt},
             {"role": "user", "content": response}]
     )
 
