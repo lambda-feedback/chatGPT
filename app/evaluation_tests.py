@@ -5,7 +5,7 @@ try:
 except ImportError:
     from evaluation import evaluation_function
 
-default_prompt = "The input you will recieve is a student's response to a question. Follow the instructions to mark the studen's response. Output your answer in exactly and only the following format: \n{{\n\"command\": \"eval\",\n\"result\":{{\n\"is_correct\": \"<bool>\",\n\"feedback\":\"<string>\",\n\"warnings\": \"<array>\"\n}}\n}} \n Answer: {}. \n Response: {}. \n params: {}. \n Only provide corrective or suggestive feedback. Do NOT provide any subjective, emotional, or motivational feedback such as exclamation marks or 'well done'. Don't reveal the true answer if it wasn't given in the response. Be objective. Justify the judgement. Answer in 1st person to the student."
+default_prompt = "The input you will receive is a student's response to a question. Follow the instructions to mark the student's response. Output your answer in exactly and only the following format: “{\n'is_correct': <bool>,\n'feedback':'<string>',\n'warnings': <array>}”. Follow the python syntax rules in this output. Only provide corrective or suggestive feedback. Do NOT provide any subjective, emotional, or motivational feedback such as exclamation marks or 'well done'. Don't reveal the true answer if it wasn't given in the response. Be objective. Justify the judgement. Answer in 1st person to the student."
 
 class TestEvaluationFunction(unittest.TestCase):
     """
@@ -27,9 +27,14 @@ class TestEvaluationFunction(unittest.TestCase):
     """
 
     def test_risk(self):
-        prompt = "The student needs to enter a valid risk with a short description of how it can cause harm" + default_prompt
+        prompt = "The student needs to enter a risk with a short description of how it can cause harm" + default_prompt
         response = "The sun becuase UV rays can cause damage"
-        result = evaluation_function(response, prompt)
+        parameters = {'model': 'gpt-3.5-turbo'}
+        output = evaluation_function(response, prompt, parameters)
+        self.assertEqual(output["is_correct"], True)
+
+if __name__ == "__main__":
+    unittest.main()
         
 
     

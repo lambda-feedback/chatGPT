@@ -5,14 +5,15 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-def evaluation_function(prompt, response):
+def evaluation_function(response, prompt, parameters):
     """
     Function used to evaluate a student response.
     ---
     The handler function passes three arguments to evaluation_function():
 
-    - `prompt' which contains the system prompt, written by the teacher.
-    - `response` which contains the student's answer.
+    - 'response' which contains the student's answer.
+    - 'prompt' which contains the teacher's prompt
+    - 'parameters' is a dictionary which contains the 'model' parameter
 
     The output of this function is what is returned as the API response 
     and therefore must be JSON-encodable. It must also conform to the 
@@ -29,10 +30,11 @@ def evaluation_function(prompt, response):
     openai.api_key = "sk-"
 
     completion = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
-        messages=[{"role": "system", "content": prompt},
+        model = parameters['model'],
+        messages = [{"role": "system", "content": prompt},
             {"role": "user", "content": response}]
     )
 
     chat_response = completion.choices[0].message.content
-    return chat_response
+    output = eval(chat_response)
+    return output
