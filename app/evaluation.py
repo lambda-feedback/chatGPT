@@ -5,7 +5,13 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-default_prompt = "You are an AI based on an online learning platform. Provide feedback to the student in first person. Output your answer in exactly and only the following format: {\n'is_correct': <bool>,\n'feedback':'<string>',\n'warnings': <array>}. Follow the python syntax rules in this output."
+default_prompt = """
+Provide feedback to the student in first person. Output your answer in exactly and only the following format: 
+
+{\n'is_correct': <bool>,\n'feedback':"<string>">}. 
+ 
+Follow the python syntax rules in this output.
+"""
 
 def evaluation_function(response, prompt, parameters):
     """

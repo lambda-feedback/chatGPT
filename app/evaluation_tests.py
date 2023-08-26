@@ -5,6 +5,8 @@ try:
 except ImportError:
     from evaluation import evaluation_function
 
+model = 'gpt-3.5-turbo'
+
 class TestEvaluationFunction(unittest.TestCase):
     """
         TestCase Class used to test the algorithm.
@@ -26,36 +28,36 @@ class TestEvaluationFunction(unittest.TestCase):
 
     def test_general_risk(self):
         prompt = "The student needs to enter a risk with a short description of how it can cause harm"
-        response = "The sun becuase UV rays can cause damage"
-        parameters = {'model': 'gpt-3.5-turbo'}
+        response = "The pressurised vessel, because it could explode and cause injury if it's overpressurised."
+        parameters = {'model': model}
         output = evaluation_function(response, prompt, parameters)
         self.assertEqual(output["is_correct"], True)
 
     def test_photosynthesis_definition(self):
         prompt = "Evaluate the student's response for the definition of photosynthesis and provide feedback."
         response = "Photosynthesis is the process by which plants convert light energy into chemical energy to fuel their growth."
-        parameters = {'model': 'gpt-3.5-turbo'}
+        parameters = {'model': model}
         output = evaluation_function(response, prompt, parameters)
         self.assertEqual(output["is_correct"], True)
 
     def test_incorrect_answer(self):
         prompt = "Analyze the response regarding the capital of France and provide feedback."
         response = "The capital of France is Berlin."
-        parameters = {'model': 'gpt-3.5-turbo'}
+        parameters = {'model': model}
         output = evaluation_function(response, prompt, parameters)
         self.assertEqual(output["is_correct"], False)
 
     def test_list(self):
         prompt = "Mark this response asking students for the three primary colours in painting."
         response = "Red, blue, yellow."
-        parameters = {'model': 'gpt-3.5-turbo'}
+        parameters = {'model': model}
         output = evaluation_function(response, prompt, parameters)
         self.assertEqual(output["is_correct"], True)
 
     def test_physics_definition(self):
         prompt = "Examine the explanation of the law of conservation of energy and provide feedback."
         response = "The law of conservation of energy states that energy cannot be created or destroyed, only transformed from one form to another. It's a fundamental principle in physics."
-        parameters = {'model': 'gpt-3.5-turbo'}
+        parameters = {'model': model}
         output = evaluation_function(response, prompt, parameters)
         self.assertEqual(output["is_correct"], True)
 
