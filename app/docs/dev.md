@@ -1,7 +1,11 @@
 # YourFunctionName
 This evaluation function allows response areas to be marked (true/false with feedback) via openAI models. 
 
-To run this code, you need to enter your openAI API key into openai.api_key ="" in evaluation.py.
+To run this code, you need to enter your openAI API key into 
+```
+openai.api_key ="" 
+```
+in evaluation.py.
 
 ## Inputs
 This function requires 'model' parameter to function. It also requires prompt and response strings.
