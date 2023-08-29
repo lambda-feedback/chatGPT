@@ -33,18 +33,33 @@ class TestEvaluationFunction(unittest.TestCase):
         output = evaluation_function(response, prompt, parameters)
         self.assertEqual(output['is_correct'], True)
 
-    def test_photosynthesis_definition(self):
+    def test_photosynthesis_definition_correct(self):
         prompt = "Evaluate the student's response for the definition of photosynthesis"
         response = "Photosynthesis is the process by which plants convert light energy into chemical energy to fuel their growth."
         parameters = {'model': model}
         output = evaluation_function(response, prompt, parameters)
         self.assertEqual(output["is_correct"], True)
 
-    def test_incorrect_answer(self):
+    def test_photosynthesis_definition_incomplete(self):
+        prompt = "Evaluate the student's response for the definition of photosynthesis."
+        response = "Photosynthesis is the process by which plants make their food."
+        parameters = {'model': model}
+        output = evaluation_function(response, prompt, parameters)
+        self.assertEqual(output["is_correct"], False)
+
+    def test_capital_city_incorrect(self):
         prompt = "Analyze the response regarding the capital of France"
         response = "The capital of France is Berlin."
         parameters = {'model': model}
         output = evaluation_function(response, prompt, parameters)
+        self.assertEqual(output["is_correct"], False)
+
+    def test_capital_city_partially_correct(self):
+        prompt = "Analyze the response regarding the capital of France"
+        response = "The capital of France is Paris, which is the largest city in the world."
+        parameters = {'model': model}
+        output = evaluation_function(response, prompt, parameters)
+        print(output)
         self.assertEqual(output["is_correct"], False)
 
     def test_list(self):
