@@ -6,14 +6,14 @@ from dotenv import load_dotenv
 load_dotenv()
 
 default_prompt = """
-Provide feedback to the student in first person. Output your answer in exactly and only the following format: 
+Provide feedback to the student's answer in first person.
 
-{\n'is_correct': <bool>,\n'feedback':"<string>">}
- 
-Follow the python syntax rules in this output.
+Output your feedback, a new line, and then a boolean (True if the student is correct and False if the student is wrong). i.e., your response should be in the form:
+feedback
+boolean
 """
 
-def evaluation_function(response, prompt, parameters):
+def evaluation_function(response, prompt, parameters, counter = 0):
     """
     Function used to evaluate a student response.
     ---
@@ -35,6 +35,7 @@ def evaluation_function(response, prompt, parameters):
     return types and that evaluation_function() is the main function used 
     to output the evaluation response.
     """
+
     openai.api_key = "sk-"
 
     completion = openai.ChatCompletion.create(
@@ -44,6 +45,26 @@ def evaluation_function(response, prompt, parameters):
     )
 
     chat_response = completion.choices[0].message.content
-    print(chat_response)
-    output = eval(chat_response)
+
+    # Remove any empty lines from the chat response 
+    lines = chat_response.splitlines ()
+    lines = [line for line in lines if line.strip ()]
+    chat_response = "\n".join (lines)
+
+    # Split the chat response by newline and strip any whitespace
+    chat_response_list = chat_response.split("\n")
+    chat_response_list = [x.strip() for x in chat_response_list]
+
+    # Checks if 'chat_response_list' contains 2 items (feedback and bool)
+    if len(chat_response_list) != 2:
+        if counter >= 10: 
+            return 
+        return evaluation_function(response, prompt, parameters, counter + 1)
+        
+
+    # Assign the bool and feedback string to the output dictionary
+    output = {}
+    output['feedback'] = chat_response_list[0]
+    output['is_correct'] = eval(chat_response_list[1])
+
     return output
