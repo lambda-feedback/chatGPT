@@ -4,7 +4,12 @@ This evaluation function allows response areas to be marked (true/false with fee
 To run this code, you need to enter your openAI API key into openai.api_key ="" in evaluation.py.
 
 ## Inputs
-*Specific input parameters which can be supplied when the `eval` command is supplied to this function.*
+This function requires a 'model' parameter to function.
+
+```
+parameters = {'model': model}
+```
+
 
 ## Outputs
 *Output schema/values for this function*
