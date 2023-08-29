@@ -5,17 +5,23 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+default_prompt = """
+Provide feedback to the student's answer in first person.
 
-def evaluation_function(response, answer, params):
+Output your feedback, a new line, and then a boolean (True if the student is correct and False if the student is wrong). i.e., your response should be in the form:
+feedback
+boolean
+"""
+
+def evaluation_function(response, prompt, parameters, counter = 0):
     """
     Function used to evaluate a student response.
     ---
     The handler function passes three arguments to evaluation_function():
 
-    - `response` which are the answers provided by the student.
-    - `answer` which are the correct answers to compare against.
-    - `params` which are any extra parameters that may be useful,
-        e.g., error tolerances.
+    - 'response' which contains the student's answer.
+    - 'prompt' which contains the teacher's prompt
+    - 'parameters' is a dictionary which contains the 'model' parameter
 
     The output of this function is what is returned as the API response 
     and therefore must be JSON-encodable. It must also conform to the 
@@ -29,25 +35,37 @@ def evaluation_function(response, answer, params):
     return types and that evaluation_function() is the main function used 
     to output the evaluation response.
     """
-    openai.api_key = os.environ.get("OPENAI_API_KEY")
 
-    prompt = "Compare the `response` to the `answer` considering the `params`. Output your answer in exactly and only the following format: \n{{\n\"command\": \"eval\",\n\"result\":{{\n\"is_correct\": \"<bool>\",\n\"feedback\":\"<string>\",\n\"warnings\": \"<array>\"\n}}\n}} \n Answer: {}. \n Response: {}. \n params: {}. \n Only provide corrective or suggestive feedback. Don't provide any subjective, emotional, or motivational feedback (such as exclamation marks or 'well done'). Don't reveal the true answer if it wasn't given in the response. Be objective. Justify the judgement.".format(
-        response, answer, params)
+    openai.api_key = "sk-"
 
-    response = openai.Completion.create(
-        engine="text-davinci-003",
-        prompt=prompt,
-        max_tokens=1024,
+    completion = openai.ChatCompletion.create(
+        model = parameters['model'],
+        messages = [{"role": "system", "content": prompt + default_prompt},
+            {"role": "user", "content": response}]
     )
 
-    return json.loads(response["choices"][0]["text"])
+    chat_response = completion.choices[0].message.content
 
+    # Remove any empty lines from the chat response 
+    lines = chat_response.splitlines ()
+    lines = [line for line in lines if line.strip ()]
+    chat_response = "\n".join (lines)
 
-if __name__ == "__main__":
-    response, answer = "ketchup", "red sauce"
-    print(response, answer)
-    result = evaluation_function(
-        response, answer, {"mode": "If the reponse is similar to the answer then the response is correct."})
-    result["result"]["is_correct"] = bool(result["result"]["is_correct"])
-    print(bool(result["result"]["is_correct"]))
-    print(result)
+    # Split the chat response by newline and strip any whitespace
+    chat_response_list = chat_response.split("\n")
+    chat_response_list = [x.strip() for x in chat_response_list]
+
+    # Checks if 'chat_response_list' contains 2 items (feedback and bool)
+    if len(chat_response_list) != 2:
+        # Prevents infnite api calls
+        if counter >= 10: 
+            return 
+        return evaluation_function(response, prompt, parameters, counter + 1)
+        
+
+    # Assign the bool and feedback string to the output dictionary
+    output = {}
+    output['feedback'] = chat_response_list[0]
+    output['is_correct'] = eval(chat_response_list[1])
+
+    return output
