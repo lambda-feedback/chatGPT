@@ -57,6 +57,7 @@ def evaluation_function(response, prompt, parameters, counter = 0):
 
     # Checks if 'chat_response_list' contains 2 items (feedback and bool)
     if len(chat_response_list) != 2:
+        # Prevents infnite api calls
         if counter >= 10: 
             return 
         return evaluation_function(response, prompt, parameters, counter + 1)
