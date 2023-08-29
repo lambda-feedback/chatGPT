@@ -36,7 +36,7 @@ def evaluation_function(response, prompt, parameters, counter = 0):
     to output the evaluation response.
     """
 
-    openai.api_key = "sk-"
+    openai.api_key = ""
 
     completion = openai.ChatCompletion.create(
         model = parameters['model'],

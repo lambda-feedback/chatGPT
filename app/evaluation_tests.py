@@ -41,7 +41,7 @@ class TestEvaluationFunction(unittest.TestCase):
         self.assertEqual(output["is_correct"], True)
 
     def test_photosynthesis_definition_incomplete(self):
-        prompt = "Evaluate the student's response for the definition of photosynthesis."
+        prompt = "Evaluate the student's response for the definition of photosynthesis. They should mention the conversion of light energy to chemical energy."
         response = "Photosynthesis is the process by which plants make their food."
         parameters = {'model': model}
         output = evaluation_function(response, prompt, parameters)
@@ -59,7 +59,6 @@ class TestEvaluationFunction(unittest.TestCase):
         response = "The capital of France is Paris, which is the largest city in the world."
         parameters = {'model': model}
         output = evaluation_function(response, prompt, parameters)
-        print(output)
         self.assertEqual(output["is_correct"], False)
 
     def test_list(self):
