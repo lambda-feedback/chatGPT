@@ -4,10 +4,12 @@ This evaluation function allows response areas to be marked (true/false with fee
 To run this code, you need to enter your openAI API key into openai.api_key ="" in evaluation.py.
 
 ## Inputs
-This function requires a 'model' parameter to function.
+This function requires 'model' parameter to function. It also requires prompt and response strings.
 
 ```
-parameters = {'model': model}
+parameters = {'model': 'gpt-3.5-turbo'}
+prompt = "Evaluate the student's response for the definition of photosynthesis"
+response = "Photosynthesis is the process by which plants convert light energy into chemical energy to fuel their growth"
 ```
 
 
