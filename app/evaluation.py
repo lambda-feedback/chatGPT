@@ -8,9 +8,7 @@ load_dotenv()
 default_prompt = """
 Provide feedback to the student's answer in first person.
 
-Output your feedback, a new line, and then a boolean (True if the student is correct and False if the student is wrong). i.e., your response should be in the form:
-feedback
-boolean
+Output a boolean (True if the student is correct and False if the student is wrong), a vertical bar |, and then your feedback. i.e., your response should be in the form: boolean|feedback
 """
 
 def evaluation_function(response, prompt, parameters, counter = 0):
@@ -36,8 +34,9 @@ def evaluation_function(response, prompt, parameters, counter = 0):
     to output the evaluation response.
     """
 
-    openai.api_key = ""
+    openai.api_key = "sk-"
 
+    # Call openAI API
     completion = openai.ChatCompletion.create(
         model = parameters['model'],
         messages = [{"role": "system", "content": prompt + default_prompt},
@@ -46,26 +45,15 @@ def evaluation_function(response, prompt, parameters, counter = 0):
 
     chat_response = completion.choices[0].message.content
 
-    # Remove any empty lines from the chat response 
-    lines = chat_response.splitlines ()
-    lines = [line for line in lines if line.strip ()]
-    chat_response = "\n".join (lines)
+    # Split the chat_response string by the vertical bar and strip any extra spaces
+    parts = chat_response.split("|")
+    boolean = parts[0].strip()
+    feedback = parts[1].strip()
 
-    # Split the chat response by newline and strip any whitespace
-    chat_response_list = chat_response.split("\n")
-    chat_response_list = [x.strip() for x in chat_response_list]
+    # Convert the boolean string to a boolean value
+    is_correct = boolean == "True"
 
-    # Checks if 'chat_response_list' contains 2 items (feedback and bool)
-    if len(chat_response_list) != 2:
-        # Prevents infnite api calls
-        if counter >= 10: 
-            return 
-        return evaluation_function(response, prompt, parameters, counter + 1)
-        
-
-    # Assign the bool and feedback string to the output dictionary
-    output = {}
-    output['feedback'] = chat_response_list[0]
-    output['is_correct'] = eval(chat_response_list[1])
+    # Create the output dictionary
+    output = {"feedback": feedback, "is_correct": is_correct}
 
     return output
