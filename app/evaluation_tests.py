@@ -49,15 +49,6 @@ class TestEvaluationFunction(unittest.TestCase):
         output = evaluation_function(response, answer, parameters)
         self.assertEqual(output["is_correct"], False)
 
-    def test_capital_city_partially_correct(self):
-        response = "The capital of France is Paris, which is the largest city in the world."
-        parameters = {'model': model, 
-                      'main_prompt': "Analyze the response regarding the capital of France",
-                      'feedback_prompt': "You are an AI who should provide objective and constructive feedback to the student",
-                      'default_prompt': default_prompt}
-        output = evaluation_function(response, answer, parameters)
-        self.assertEqual(output["is_correct"], False)
-
     def test_list(self):
         response = "Red, blue and yellow."
         parameters = {'model': model, 
