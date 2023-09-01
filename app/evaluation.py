@@ -5,13 +5,6 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-default_prompt = """
-Provide feedback to the student's answer in first person.
-
-Output a boolean (True if the student is correct and False if the student is wrong), a vertical bar |, and then your feedback. i.e., your response should be in the form: boolean|feedback
-"""
-
-
 def evaluation_function(response, answer, parameters, counter=0):
     """
     Function used to evaluate a student response.
@@ -20,7 +13,7 @@ def evaluation_function(response, answer, parameters, counter=0):
 
     - 'response' which contains the student's answer
     - 'prompt' which contains the teacher's prompt
-    - 'parameters' is a dictionary which contains the 'model' parameter and the 'prompt' parameter
+    - 'parameters' is a dictionary which contains the 'model' parameter, the 'prompt' parameter and the 'default_prompt' parameter.
 
     The output of this function is what is returned as the API response 
     and therefore must be JSON-encodable. It must also conform to the 
@@ -40,7 +33,7 @@ def evaluation_function(response, answer, parameters, counter=0):
     # Call openAI API
     completion = openai.ChatCompletion.create(
         model=parameters['model'],
-        messages=[{"role": "system", "content": parameters['prompt'] + default_prompt},
+        messages=[{"role": "system", "content": parameters['prompt'] + parameters['default_prompt']},
                   {"role": "user", "content": response}]
     )
 
