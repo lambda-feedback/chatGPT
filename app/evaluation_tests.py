@@ -6,6 +6,9 @@ except ImportError:
     from evaluation import evaluation_function
 
 model = 'gpt-3.5-turbo'
+
+default_prompt = "Provide feedback to the student's answer in first person. Output a boolean (True if the student is correct and False if the student is wrong), a vertical bar |, and then your feedback. i.e., your response should be in the form: boolean|feedback"
+
 answer = 1
 
 class TestEvaluationFunction(unittest.TestCase):
@@ -30,8 +33,7 @@ class TestEvaluationFunction(unittest.TestCase):
     def test_general_risk(self):
         response = "The pressurised vessel, because it could explode and cause injury if it's overpressurised."
         parameters = {'model': model, 
-                      'prompt':"The student needs to enter a risk with a short description of how it can cause harm",
-                      'default_prompt':"Provide feedback to the student's answer in first person. Output a boolean (True if the student is correct and False if the student is wrong), a vertical bar |, and then your feedback. i.e., your response should be in the form: boolean|feedback"}
+                      'prompt':""}
         output = evaluation_function(response, answer, parameters)
         self.assertEqual(output['is_correct'], True)
 
@@ -39,7 +41,7 @@ class TestEvaluationFunction(unittest.TestCase):
         response = "Photosynthesis is the process by which plants convert light energy into chemical energy to fuel their growth."
         parameters = {'model': model, 
                       'prompt': "Evaluate the student's response for the definition of photosynthesis",
-                      'default_prompt':"Provide feedback to the student's answer in first person. Output a boolean (True if the student is correct and False if the student is wrong), a vertical bar |, and then your feedback. i.e., your response should be in the form: boolean|feedback"}
+                      'default_prompt': default_prompt}
         output = evaluation_function(response, answer, parameters)
         self.assertEqual(output["is_correct"], True)
 
@@ -47,7 +49,7 @@ class TestEvaluationFunction(unittest.TestCase):
         response = "Photosynthesis is the process by which plants make their food."
         parameters = {'model': model, 
                       'prompt': "Evaluate the student's response for the definition of photosynthesis. They should mention the conversion of light energy to chemical energy.",
-                      'default_prompt':"Provide feedback to the student's answer in first person. Output a boolean (True if the student is correct and False if the student is wrong), a vertical bar |, and then your feedback. i.e., your response should be in the form: boolean|feedback"}
+                      'default_prompt': default_prompt}
         output = evaluation_function(response, answer, parameters)
         self.assertEqual(output["is_correct"], False)
 
@@ -55,7 +57,7 @@ class TestEvaluationFunction(unittest.TestCase):
         response = "The capital of France is Berlin."
         parameters = {'model': model, 
                       'prompt': "Analyze the response regarding the capital of France",
-                      'default_prompt':"Provide feedback to the student's answer in first person. Output a boolean (True if the student is correct and False if the student is wrong), a vertical bar |, and then your feedback. i.e., your response should be in the form: boolean|feedback"}
+                      'default_prompt': default_prompt}
         output = evaluation_function(response, answer, parameters)
         self.assertEqual(output["is_correct"], False)
 
@@ -63,7 +65,7 @@ class TestEvaluationFunction(unittest.TestCase):
         response = "The capital of France is Paris, which is the largest city in the world."
         parameters = {'model': model, 
                       'prompt': "Analyze the response regarding the capital of France",
-                      'default_prompt':"Provide feedback to the student's answer in first person. Output a boolean (True if the student is correct and False if the student is wrong), a vertical bar |, and then your feedback. i.e., your response should be in the form: boolean|feedback"}
+                      'default_prompt': default_prompt}
         output = evaluation_function(response, answer, parameters)
         self.assertEqual(output["is_correct"], False)
 
@@ -71,7 +73,7 @@ class TestEvaluationFunction(unittest.TestCase):
         response = "Red, blue and yellow."
         parameters = {'model': model, 
                       'prompt': "Mark this response asking students for the three primary colours in painting.",
-                      'default_prompt':"Provide feedback to the student's answer in first person. Output a boolean (True if the student is correct and False if the student is wrong), a vertical bar |, and then your feedback. i.e., your response should be in the form: boolean|feedback"}
+                      'default_prompt': default_prompt}
         output = evaluation_function(response, answer, parameters)
         self.assertEqual(output["is_correct"], True)
 
@@ -79,7 +81,7 @@ class TestEvaluationFunction(unittest.TestCase):
         response = "The law of conservation of energy states that energy cannot be created or destroyed, only transformed from one form to another. It's a fundamental principle in physics."
         parameters = {'model': model, 
                       'prompt': "Examine the explanation of the law of conservation of energy and provide feedback.",
-                      'default_prompt':"Provide feedback to the student's answer in first person. Output a boolean (True if the student is correct and False if the student is wrong), a vertical bar |, and then your feedback. i.e., your response should be in the form: boolean|feedback"}
+                      'default_prompt': default_prompt}
         output = evaluation_function(response, answer, parameters)
         self.assertEqual(output["is_correct"], True)
 
