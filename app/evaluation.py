@@ -12,7 +12,7 @@ Output a boolean (True if the student is correct and False if the student is wro
 """
 
 
-def evaluation_function(response, prompt, parameters, counter=0):
+def evaluation_function(response, answer, parameters, counter=0):
     """
     Function used to evaluate a student response.
     ---
@@ -20,7 +20,7 @@ def evaluation_function(response, prompt, parameters, counter=0):
 
     - 'response' which contains the student's answer
     - 'prompt' which contains the teacher's prompt
-    - 'parameters' is a dictionary which contains the 'model' parameter
+    - 'parameters' is a dictionary which contains the 'model' parameter and the 'prompt' parameter
 
     The output of this function is what is returned as the API response 
     and therefore must be JSON-encodable. It must also conform to the 
@@ -40,7 +40,7 @@ def evaluation_function(response, prompt, parameters, counter=0):
     # Call openAI API
     completion = openai.ChatCompletion.create(
         model=parameters['model'],
-        messages=[{"role": "system", "content": prompt + default_prompt},
+        messages=[{"role": "system", "content": parameters['prompt'] + default_prompt},
                   {"role": "user", "content": response}]
     )
 
