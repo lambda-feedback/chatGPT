@@ -6,6 +6,7 @@ except ImportError:
     from evaluation import evaluation_function
 
 model = 'gpt-3.5-turbo'
+answer = 1
 
 class TestEvaluationFunction(unittest.TestCase):
     """
