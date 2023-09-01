@@ -31,9 +31,7 @@ def evaluation_function(response, answer, parameters, counter=0):
     to output the evaluation response.
     """
 
-    openai.api_key = "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"
-    
-    #os.environ.get("OPENAI_API_KEY")
+    openai.api_key = os.environ.get("OPENAI_API_KEY")
 
     # Call openAI API for boolean
     completion_boolean = openai.ChatCompletion.create(
