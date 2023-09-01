@@ -12,8 +12,11 @@ def evaluation_function(response, answer, parameters, counter=0):
     The handler function passes three arguments to evaluation_function():
 
     - 'response' which contains the student's answer
-    - 'prompt' which contains the teacher's prompt
-    - 'parameters' is a dictionary which contains the 'model' parameter, the 'prompt' parameter and the 'default_prompt' parameter.
+    - 'parameters' is a dictionary which contains the parameters:
+        - 'model'
+        - 'main_prompt' 
+        - 'feedback_prompt'  
+        - 'default_prompt'
 
     The output of this function is what is returned as the API response 
     and therefore must be JSON-encodable. It must also conform to the 
@@ -30,24 +33,28 @@ def evaluation_function(response, answer, parameters, counter=0):
 
     openai.api_key = os.environ.get("OPENAI_API_KEY")
 
-    # Call openAI API
-    completion = openai.ChatCompletion.create(
-        model=parameters['model'],
-        messages=[{"role": "system", "content": parameters['prompt'] + parameters['default_prompt']},
-                  {"role": "user", "content": response}]
-    )
+    # Call openAI API for boolean
+    completion_boolean = openai.ChatCompletion.create(
+        model = parameters['model'],
+        messages = [{"role": "system", "content": parameters['main_prompt'] + parameters['default_prompt']},
+                  {"role": "user", "content": response}])
+    
+    is_correct = completion_boolean.choices[0].message.content.strip() == "True"
+    is_correct_str = str(is_correct)
 
-    chat_response = completion.choices[0].message.content
+    output = {"is_correct": is_correct}
 
-    # Split the chat_response string by the vertical bar and strip any extra spaces
-    parts = chat_response.split("|")
-    boolean = parts[0].strip()
-    feedback = parts[1].strip()
+    # Check if feedback prompt is empty or not. Only populates feedback in 'output' if there is a 'feedback_prompt'
+    if parameters['feedback_prompt'].strip():
+        completion_feedback = openai.ChatCompletion.create(
+            model=parameters['model'],
+            messages=[{"role": "system","content": "{parameters['main_prompt']} {parameters['feedback_prompt']} You must take the student's answer to be: {is_correct_str}."},
+                {"role": "user", "content": response}
+            ]
+        )
 
-    # Convert the boolean string to a boolean value
-    is_correct = boolean == "True"
+        feedback = completion_feedback.choices[0].message.content.strip()
+        output["feedback"] = feedback
 
-    # Create the output dictionary
-    output = {"feedback": feedback, "is_correct": is_correct}
 
     return output
