@@ -11,7 +11,8 @@ Provide feedback to the student's answer in first person.
 Output a boolean (True if the student is correct and False if the student is wrong), a vertical bar |, and then your feedback. i.e., your response should be in the form: boolean|feedback
 """
 
-def evaluation_function(response, prompt, parameters, counter = 0):
+
+def evaluation_function(response, prompt, parameters, counter=0):
     """
     Function used to evaluate a student response.
     ---
@@ -34,13 +35,13 @@ def evaluation_function(response, prompt, parameters, counter = 0):
     to output the evaluation response.
     """
 
-    openai.api_key = "sk-"
+    openai.api_key = os.environ.get("OPENAI_API_KEY")
 
     # Call openAI API
     completion = openai.ChatCompletion.create(
-        model = parameters['model'],
-        messages = [{"role": "system", "content": prompt + default_prompt},
-            {"role": "user", "content": response}]
+        model=parameters['model'],
+        messages=[{"role": "system", "content": prompt + default_prompt},
+                  {"role": "user", "content": response}]
     )
 
     chat_response = completion.choices[0].message.content
