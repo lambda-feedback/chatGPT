@@ -48,7 +48,7 @@ def evaluation_function(response, answer, parameters, counter=0):
     if parameters['feedback_prompt'].strip():
         completion_feedback = openai.ChatCompletion.create(
             model = parameters['model'],
-            messages=[{"role": "system","content": parameters['main_prompt'] + parameters['feedback_prompt'] + "You must take the student's answer to be:" + {is_correct_str}},
+            messages=[{"role": "system","content": parameters['main_prompt'] + parameters['feedback_prompt'] + "You must take the student's answer to be:" + is_correct_str},
                 {"role": "user", "content": response}])
 
         feedback = completion_feedback.choices[0].message.content.strip()
