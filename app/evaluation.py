@@ -18,7 +18,7 @@ def evaluation_function(response, prompt, parameters, counter=0):
     ---
     The handler function passes three arguments to evaluation_function():
 
-    - 'response' which contains the student's answer.
+    - 'response' which contains the student's answer
     - 'prompt' which contains the teacher's prompt
     - 'parameters' is a dictionary which contains the 'model' parameter
 
