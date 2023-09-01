@@ -31,7 +31,9 @@ def evaluation_function(response, answer, parameters, counter=0):
     to output the evaluation response.
     """
 
-    openai.api_key = os.environ.get("OPENAI_API_KEY")
+    openai.api_key = "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"
+    
+    #os.environ.get("OPENAI_API_KEY")
 
     # Call openAI API for boolean
     completion_boolean = openai.ChatCompletion.create(
@@ -48,7 +50,7 @@ def evaluation_function(response, answer, parameters, counter=0):
     if parameters['feedback_prompt'].strip():
         completion_feedback = openai.ChatCompletion.create(
             model=parameters['model'],
-            messages=[{"role": "system","content": "{parameters['main_prompt']} {parameters['feedback_prompt']} You must take the student's answer to be: {is_correct_str}."},
+            messages=[{"role": "system","content": parameters['main_prompt'] + parameters['feedback_prompt'] + "You must take the student's answer to be: {is_correct_str}."},
                 {"role": "user", "content": response}
             ]
         )
@@ -56,5 +58,5 @@ def evaluation_function(response, answer, parameters, counter=0):
         feedback = completion_feedback.choices[0].message.content.strip()
         output["feedback"] = feedback
 
-
+    print(output)
     return output
