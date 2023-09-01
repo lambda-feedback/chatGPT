@@ -33,7 +33,8 @@ class TestEvaluationFunction(unittest.TestCase):
     def test_general_risk(self):
         response = "The pressurised vessel, because it could explode and cause injury if it's overpressurised."
         parameters = {'model': model, 
-                      'prompt':""}
+                      'prompt':"The student needs to enter a risk with a short description of how it can cause harm",
+                      'default_prompt': default_prompt}
         output = evaluation_function(response, answer, parameters)
         self.assertEqual(output['is_correct'], True)
 
