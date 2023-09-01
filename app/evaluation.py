@@ -42,15 +42,19 @@ def evaluation_function(response, answer, parameters, counter=0):
     is_correct = completion_boolean.choices[0].message.content.strip() == "True"
     is_correct_str = str(is_correct)
 
-    # Call openAI API for feedback
-    completion_feedback = openai.ChatCompletion.create(
-        model = parameters['model'],
-        messages = [{"role": "system", "content": parameters['main_prompt'] + parameters['feedback_prompt'] + " You must take the student's answer to be: " + is_correct_str}, 
-                    {"role": "user", "content": response}])
+    output = {"is_correct": is_correct}
 
-    feedback = completion_feedback.choices[0].message.content.strip()
+    # Check if feedback prompt is empty or not. Only populates feedback in 'output' if there is a 'feedback_prompt'
+    if parameters['feedback_prompt'].strip():
+        completion_feedback = openai.ChatCompletion.create(
+            model=parameters['model'],
+            messages=[{"role": "system","content": "{parameters['main_prompt']} {parameters['feedback_prompt']} You must take the student's answer to be: {is_correct_str}."},
+                {"role": "user", "content": response}
+            ]
+        )
 
-    # Create the output dictionary
-    output = {"feedback": feedback, "is_correct": is_correct}
+        feedback = completion_feedback.choices[0].message.content.strip()
+        output["feedback"] = feedback
+
 
     return output
