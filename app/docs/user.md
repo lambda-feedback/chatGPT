@@ -1,7 +1,7 @@
 # chatGPT
 
 ## What does it do?
-This chatGPT evaluation function is designed to automatically evaluate student responses to questions. It currently uses the openAI API to determine the correctness (true/false) of the student's answer and can also provide feedback on their answer.
+This chatGPT evaluation function is designed to automatically evaluate student responses to questions. It currently uses the openAI API to determine the correctness (true/false) of the student's answer and can also provide them with feedback.
 
 
 ## What does the teacher need to input?
