@@ -1,6 +1,10 @@
 # chatGPT
 
-There are three arguments to consider:
+This chatGPT evaluation function is designed to automatically evaluate student responses to questions. It currently uses the openAI API to determine the correctness (true/false) of the student's answer and can also provide feedback on their answer.
+
+There are four parameters to consider:
+- 'Model'
+  - As of now, "gpt-3.5-turbo" is the only model available. In the future, more openAI and other models can be implemented.
 - 'Main_prompt'
   - In this prompt you should explain the question and answer to the AI.
 - 'Default_prompt'
