@@ -5,6 +5,12 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+# Used to
+def enforce_full_stop(s):
+    if not s.endswith('.'):
+        s += '.'
+    return s
+
 def evaluation_function(response, answer, parameters):
     """
     Function used to evaluate a student response.
@@ -33,11 +39,19 @@ def evaluation_function(response, answer, parameters):
 
     openai.api_key = os.environ.get("OPENAI_API_KEY")
 
+    # Making sure that each prompt ends with a full stop (prevents gpt getting confused when concatenated)
+    main_prompt = enforce_full_stop(parameters['main_prompt'])
+    default_prompt = enforce_full_stop(parameters['default_prompt'])
+    feedback_prompt = enforce_full_stop(parameters['feedback_prompt'])
+    print(main_prompt)
+    print(feedback_prompt)
+
     # Call openAI API for boolean
     completion_boolean = openai.ChatCompletion.create(
         model = parameters['model'],
-        messages = [{"role": "system", "content": parameters['main_prompt'] + " " + parameters['default_prompt']},
-                  {"role": "user", "content": response}])
+        messages = [{"role": "system", "content": main_prompt + " " + default_prompt},
+            {"role": "user", "content": response}])
+
     
     is_correct = completion_boolean.choices[0].message.content.strip() == "True"
     is_correct_str = str(is_correct)
@@ -48,11 +62,10 @@ def evaluation_function(response, answer, parameters):
     if parameters['feedback_prompt'].strip():
         completion_feedback = openai.ChatCompletion.create(
             model = parameters['model'],
-            messages=[{"role": "system","content": parameters['main_prompt'] + " " + parameters['feedback_prompt'] + " You must take the student's answer to be: " + is_correct_str},
-                {"role": "user", "content": response}])
+            messages = [{"role": "system", "content": main_prompt + " " + feedback_prompt + " You must take the student's answer to be: " + is_correct_str},
+            {"role": "user", "content": response}])
 
         feedback = completion_feedback.choices[0].message.content.strip()
         output["feedback"] = feedback
 
-    print(output)
     return output
