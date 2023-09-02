@@ -23,6 +23,8 @@ To successfully run this function, ensure you set your OpenAI API key. The code 
 4. **feedback_prompt**: 
    - This prompt guides the AI on how feedback should be given. 
    - If left blank, only a binary correctness assessment is returned without detailed feedback.
+  
+Note that an input of a variable called `answer` is also required. This can be any value. This is to ensure compatibility with LambdaFeedback.
 
 ### Example Input:
 
@@ -59,7 +61,7 @@ parameters = {
     'feedback_prompt': "You are an AI tutor. Offer constructive feedback."
 }
 response = "The capital of France is Berlin."
-output = evaluation_function(response, answer parameters)
+output = evaluation_function(response, answer, parameters)
 ```
 
 Expected Output:
