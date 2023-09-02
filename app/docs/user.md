@@ -26,7 +26,7 @@ Each example below demonstrates the potential usage of `main_prompt` and `feedba
 > In this question, the student must enter a risk and a short description of what harm it can cause.
 
 **Feedback Prompt**:
-> "You are an AI based on an online learning platform. Give the student objective and constructive feedback on their answer in first person"
+> *(Empty)*
 
 <img src="https://github.com/lambda-feedback/chatGPT/assets/138524447/af083bff-fade-4186-89aa-bc0b7f48ce0d" width="450">
 
