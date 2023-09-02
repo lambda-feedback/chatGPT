@@ -8,7 +8,7 @@ To successfully run this function, ensure you set your OpenAI API key. The code 
 
 ## Inputs
 
-### Parameters:
+### Parameters dictionary:
 
 1. **model**: 
    - Deinfes the AI model used for evaluation.
@@ -59,7 +59,7 @@ parameters = {
     'feedback_prompt': "You are an AI tutor. Offer constructive feedback."
 }
 response = "The capital of France is Berlin."
-output = evaluation_function(response, parameters)
+output = evaluation_function(response, answer parameters)
 ```
 
 Expected Output:
