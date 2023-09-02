@@ -21,9 +21,9 @@ This chatGPT evaluation function is designed to automatically evaluate student r
 ## Usage examples
 Each example below demonstrates the potential usage of `main_prompt` and `feedback_prompt` for different questions.
 
-### Risk assessment
+### Simple descriptive observation
 **Main Prompt**:
-> In this question, the student must enter a risk and a short description of what harm it can cause.
+> In this question, the student is asked to make a comment about the behaviour of a partial sum. The correct answer is 'fast convergence'. Accept any paraphrasing/equivalent answers. To be correct, they must mention both aspects (fast and convergence).
 
 **Feedback Prompt**:
 > *(Empty)*
