@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-def evaluation_function(response, answer, parameters, counter=0):
+def evaluation_function(response, answer, parameters):
     """
     Function used to evaluate a student response.
     ---
@@ -36,7 +36,7 @@ def evaluation_function(response, answer, parameters, counter=0):
     # Call openAI API for boolean
     completion_boolean = openai.ChatCompletion.create(
         model = parameters['model'],
-        messages = [{"role": "system", "content": parameters['main_prompt'] + parameters['default_prompt']},
+        messages = [{"role": "system", "content": parameters['main_prompt'] + " " + parameters['default_prompt']},
                   {"role": "user", "content": response}])
     
     is_correct = completion_boolean.choices[0].message.content.strip() == "True"
@@ -48,7 +48,7 @@ def evaluation_function(response, answer, parameters, counter=0):
     if parameters['feedback_prompt'].strip():
         completion_feedback = openai.ChatCompletion.create(
             model = parameters['model'],
-            messages=[{"role": "system","content": parameters['main_prompt'] + parameters['feedback_prompt'] + "You must take the student's answer to be:" + is_correct_str},
+            messages=[{"role": "system","content": parameters['main_prompt'] + " " + parameters['feedback_prompt'] + " You must take the student's answer to be: " + is_correct_str},
                 {"role": "user", "content": response}])
 
         feedback = completion_feedback.choices[0].message.content.strip()
