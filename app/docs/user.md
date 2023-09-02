@@ -15,8 +15,7 @@ This chatGPT evaluation function is designed to automatically evaluate student r
   - In the future, this could be changed so that 'partially incorrect' answers, etc, are possible.
 - `Feedback_prompt`
   - Leave this prompt **blank** if you do not want any textual feedback to be given to the student, but just correct/incorrect.
-  - Fill in this prompt to tell the AI how to give feedback to the student. The default prompt, which works well in most cases, is:
-   "You are an AI based on an online learning platform. Give the student feedback on their answer in first person."
+  - Fill in this prompt to tell the AI how to give feedback to the student.
 
 ## Usage examples
 Each example below demonstrates the potential usage of `main_prompt` and `feedback_prompt` for different questions.
