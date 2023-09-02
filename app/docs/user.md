@@ -1,5 +1,11 @@
 # chatGPT
 
+There are three arguments to consider:
+- 'Main_prompt'
+-   This
+
+
+
 This function makes an openAI API call to gpt to evaluate the student's answer. The overall prompt into gpt is made up of:
 
 - The system prompt
