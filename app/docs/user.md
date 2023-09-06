@@ -6,7 +6,7 @@ This chatGPT evaluation function is designed to automatically evaluate student r
 
 ## What does the teacher need to input?
 - `Model`
-  - As of now, "gpt-3.5-turbo" is the only model available. In the future, more openAI and other models can be implemented.
+  - As of now, `gpt-3.5-turbo` is the only model available. In the future, more openAI and other models can be implemented.
 - `Main_prompt`
   - In this prompt you should explain the question and answer to the AI.
 - `Default_prompt`
@@ -18,6 +18,8 @@ This chatGPT evaluation function is designed to automatically evaluate student r
   - Fill in this prompt to tell the AI how to give feedback to the student. Examples of things you may want to include in your `feedback_prompt`:
     - `Give the student objective and constructive feedback on their answer in first person.`
     - `If the student is incorrect, but provide feedback/hints to help them, but do not reveal the answer.`
+   
+Please be aware that `gpt-3.5-turbo` often gets overwhelmed by a long prompts, and can sometimes ignore your instructions. It is reccomended to do testing with your question, and use `gpt-4` if neccesary. 
 
 ## Usage examples
 Each example below demonstrates the potential usage of `main_prompt` and `feedback_prompt` for different questions.
