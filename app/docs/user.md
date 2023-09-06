@@ -19,7 +19,7 @@ This chatGPT evaluation function is designed to automatically evaluate student r
     - `Give the student objective and constructive feedback on their answer in first person.`
     - `If the student is incorrect, but provide feedback/hints to help them, but do not reveal the answer.`
    
-Please be aware that `gpt-3.5-turbo` often gets overwhelmed by a long prompts, and can sometimes ignore your instructions. It is reccomended to do testing with your question, and use `gpt-4` if neccesary. 
+Please be aware that `gpt-3.5-turbo` often gets overwhelmed by a long prompts, and can sometimes ignore your instructions. It is reccomended to do testing with your question, and use `gpt-4` if neccesary. Be aware that the cost of `gpt-4` is ~20x more than `gpt-3.5-turbo` (at the time of writing - 6th Sep 2023).
 
 ## Usage examples
 Each example below demonstrates the potential usage of `main_prompt` and `feedback_prompt` for different questions.
