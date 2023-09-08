@@ -26,6 +26,15 @@ This chatGPT evaluation function is designed to automatically evaluate student r
    
 Please be aware that `gpt-3.5-turbo` often gets overwhelmed by a long prompts, and can sometimes ignore your instructions. It is recommended to do testing with your question, and use `gpt-4` if neccesary. Be aware that the cost of `gpt-4` is ~20x more than `gpt-3.5-turbo` (at the time of writing - 6th Sep 2023).
 
+- Nulla et rhoncus turpis. Mauris ultricies elementum leo. Duis efficitur
+  accumsan nibh eu mattis. Vivamus tempus velit eros, porttitor placerat nibh
+  lacinia sed. Aenean in finibus diam.
+
+    * Duis mollis est eget nibh volutpat, fermentum aliquet dui mollis.
+    * Nam vulputate tincidunt fringilla.
+    * Nullam dignissim ultrices urna non auctor.
+
+
 ## Usage examples
 Each example below demonstrates the potential usage of `main_prompt` and `feedback_prompt` for different questions.
 
