@@ -5,7 +5,7 @@ This chatGPT evaluation function is designed to automatically evaluate student r
 
 
 ## What does the teacher need to input?
-- a `Model`
+- aa `Model`
   
     - As of now, `gpt-3.5-turbo` is the only model available. In the future, more openAI and other models can be implemented.
 -  `Main_prompt`
