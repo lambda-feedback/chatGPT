@@ -10,7 +10,7 @@ This chatGPT evaluation function is designed to automatically evaluate student r
     - As of now, `gpt-3.5-turbo` is the only model available. In the future, more openAI and other models can be implemented.
 -  `Main_prompt`
   
-        - In this prompt you should explain the question and answer to the AI.
+  - In this prompt you should explain the question and answer to the AI.
 -  `Default_prompt`
 
     - As of now, this prompt should not be changed.
