@@ -6,10 +6,13 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Used to
+
+
 def enforce_full_stop(s):
     if not s.endswith('.'):
         s += '.'
     return s
+
 
 def evaluation_function(response, answer, parameters):
     """
@@ -48,22 +51,22 @@ def evaluation_function(response, answer, parameters):
 
     # Call openAI API for boolean
     completion_boolean = openai.ChatCompletion.create(
-        model = parameters['model'],
-        messages = [{"role": "system", "content": main_prompt + " " + default_prompt},
-            {"role": "user", "content": response}])
+        model=parameters['model'],
+        messages=[{"role": "system", "content": main_prompt + " " + default_prompt},
+                  {"role": "user", "content": response}])
 
-    
-    is_correct = completion_boolean.choices[0].message.content.strip() == "True"
+    is_correct = completion_boolean.choices[0].message.content.strip(
+    ) == "True"
     is_correct_str = str(is_correct)
 
     output = {"is_correct": is_correct}
 
-    # Check if feedback prompt is empty or not. Only populates feedback in 'output' if there is a 'feedback_prompt'
+    # Check if feedback prompt is empty or not. Only populates feedback in 'output' if there is a 'feedback_prompt'.
     if parameters['feedback_prompt'].strip():
         completion_feedback = openai.ChatCompletion.create(
-            model = parameters['model'],
-            messages = [{"role": "system", "content": main_prompt + " " + feedback_prompt + " You must take the student's answer to be: " + is_correct_str},
-            {"role": "user", "content": response}])
+            model=parameters['model'],
+            messages=[{"role": "system", "content": main_prompt + " " + feedback_prompt + " You must take the student's answer to be: " + is_correct_str},
+                      {"role": "user", "content": response}])
 
         feedback = completion_feedback.choices[0].message.content.strip()
         output["feedback"] = feedback
