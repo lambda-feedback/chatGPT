@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# Used to
+# A basic way to call ChatGPT from the Lambda Feedback platform
 
 
 def enforce_full_stop(s):
