@@ -3,29 +3,25 @@
 ## What does it do?
 This chatGPT evaluation function is designed to automatically evaluate student responses to questions. It currently uses the openAI API to determine the correctness (true/false) of the student's answer and can also provide them with feedback.
 
-
 ## What does the teacher need to input?
 - `Model`
-  
     - As of now, `gpt-3.5-turbo` is the only model available. In the future, more openAI and other models can be implemented.
+    - 
 -  `Main_prompt`
-  
   - In this prompt you should explain the question and answer to gpt.
     
 -  `Default_prompt`
-
     - As of now, this prompt should not be changed.
     - It tells gpt to output a Boolean, which marks the student's answer as correct or incorrect.
     - In the future, this could be changed so that 'partially incorrect' answers, etc, are possible.
--  `Feedback_prompt`
-  
+
+-  `Feedback_prompt`  
     - Leave this prompt **blank** if you do not want any textual feedback to be given to the student, but just correct/incorrect.
     - Fill in this prompt to tell gpt how to give feedback to the student. Examples of things you may want to include in your `feedback_prompt`:
-      
         - `Give the student objective and constructive feedback on their answer in first person.`
         - `If the student is incorrect, provide feedback/hints to help them, but do not reveal the answer.`
    
-Please be aware that `gpt-3.5-turbo` often gets overwhelmed by a long prompts, and can sometimes ignore your instructions. It is recommended to do testing with your question, and use `gpt-4` if neccesary. Be aware that the cost of `gpt-4` is ~20x more than `gpt-3.5-turbo` (at the time of writing - 6th Sep 2023).
+Please be aware that `gpt-3.5-turbo` often gets overwhelmed by long prompts, and can sometimes ignore your instructions. It is recommended to do testing with your question, and use `gpt-4` if neccesary. Be aware that the cost of `gpt-4` is ~20x more than `gpt-3.5-turbo` (at the time of writing - 6th Sep 2023).
 
 
 ## Usage examples
