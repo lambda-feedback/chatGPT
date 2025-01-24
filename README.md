@@ -1,4 +1,4 @@
-# Evaluation Function Template Repository
+# Evaluation Function using ChatGPT
 
 This template repository contains the boilerplate code needed in order to create an AWS Lambda function that can be written by any tutor to grade a response area in any way they like.
 
