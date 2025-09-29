@@ -1,8 +1,6 @@
 # Evaluation Function using ChatGPT
 
-This template repository contains the boilerplate code needed in order to create an AWS Lambda function that can be written by any tutor to grade a response area in any way they like.
-
-This version is specifically for python, however the ultimate goal is to make similar boilerplate repositories in any language, allowing tutors the freedom to code in what they feel most comfortable with.
+This function can be used to prompt GPT models by providing prompts in the request parameters. For more information, look at `app/docs`.
 
 ## Table of Contents
 - [Evaluation Function Template Repository](#evaluation-function-template-repository)
@@ -15,7 +13,6 @@ This version is specifically for python, however the ultimate goal is to make si
     - [Middleware Functions](#middleware-functions)
     - [GitHub Actions](#github-actions)
   - [Pre-requisites](#pre-requisites)
-  - [Contact](#contact)
 
 ## Repository Structure
 
@@ -92,5 +89,3 @@ Although all programming can be done through the GitHub interface, it is recomme
 - A code editor such as Atom, VS Code, or Sublime.
 
 Copy this template over by clicking **Use this template** button found in the repository on GitHub. Save it to the `lambda-feedback` Organisation.
-
-## Contact
