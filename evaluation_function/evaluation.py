@@ -44,9 +44,12 @@ def evaluation_function(
     to output the evaluation response.
     """
 
+    print("Connecting to OpenAI")
     openai.api_key = os.environ.get("OPENAI_API_KEY")
 
     client = OpenAI()
+
+    print("Connected to OpenAI")
 
     # Making sure that each prompt ends with a full stop (prevents gpt getting confused when concatenated)
     main_prompt = enforce_full_stop(parameters['main_prompt'])
