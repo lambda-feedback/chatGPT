@@ -17,13 +17,12 @@ This function can be used to prompt GPT models by providing prompts in the reque
 ## Repository Structure
 
 ```bash
-app/
+evaluation_function/
     __init__.py
     evaluation.py # Script containing the main evaluation_function
     docs.md # Documentation page for this function (required)
     evaluation_tests.py # Unittests for the main evaluation_function
-    requirements.txt # list of packages needed for algorithm.py
-    Dockerfile # for building whole image to deploy to AWS
+Dockerfile # for building whole image to deploy to AWS
 
 .github/
     workflows/
