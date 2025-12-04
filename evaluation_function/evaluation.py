@@ -1,9 +1,9 @@
 import os
-import openai
-import json
 from dotenv import load_dotenv
-
-load_dotenv()
+from typing import Any
+from lf_toolkit.evaluation import Result, Params
+from openai import OpenAI
+import openai
 
 # A basic way to call ChatGPT from the Lambda Feedback platform
 
@@ -14,7 +14,11 @@ def enforce_full_stop(s):
     return s
 
 
-def evaluation_function(response, answer, parameters):
+def evaluation_function(
+    response: Any,
+    answer: Any,
+    parameters: Params,
+) -> Result:
     """
     Function used to evaluate a student response.
     ---
@@ -40,7 +44,12 @@ def evaluation_function(response, answer, parameters):
     to output the evaluation response.
     """
 
+    print("Connecting to OpenAI")
     openai.api_key = os.environ.get("OPENAI_API_KEY")
+
+    client = OpenAI()
+
+    print("Connected to OpenAI")
 
     # Making sure that each prompt ends with a full stop (prevents gpt getting confused when concatenated)
     main_prompt = enforce_full_stop(parameters['main_prompt'])
@@ -50,25 +59,22 @@ def evaluation_function(response, answer, parameters):
     print(feedback_prompt)
 
     # Call openAI API for boolean
-    completion_boolean = openai.ChatCompletion.create(
+    completion_boolean = client.chat.completions.create(
         model=parameters['model'],
         messages=[{"role": "system", "content": main_prompt + " " + default_prompt},
                   {"role": "user", "content": response}])
 
-    is_correct = completion_boolean.choices[0].message.content.strip(
-    ) == "True"
-    is_correct_str = str(is_correct)
-
-    output = {"is_correct": is_correct}
+    is_correct = completion_boolean.choices[0].message.content.strip() == "True"
+    result = Result(is_correct=is_correct)
 
     # Check if feedback prompt is empty or not. Only populates feedback in 'output' if there is a 'feedback_prompt'.
     if parameters['feedback_prompt'].strip():
-        completion_feedback = openai.ChatCompletion.create(
+        completion_feedback = client.chat.completions.create(
             model=parameters['model'],
-            messages=[{"role": "system", "content": main_prompt + " " + feedback_prompt + " You must take the student's answer to be: " + is_correct_str},
+            messages=[{"role": "system", "content": main_prompt + " " + feedback_prompt + " You must take the student's answer to be: " + str(is_correct)},
                       {"role": "user", "content": response}])
 
         feedback = completion_feedback.choices[0].message.content.strip()
-        output["feedback"] = feedback
+        result.add_feedback("general", feedback=feedback)
 
-    return output
+    return result

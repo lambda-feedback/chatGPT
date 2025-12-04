@@ -128,5 +128,20 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-.env
-.DS_Store
+# VSCode configuration
+.vscode
+
+# Evaluation function config
+config.json
+
+# README
+README.md
+
+# GitHub
+.github
+
+# Data folder
+data/
+
+# Test reports
+reports/

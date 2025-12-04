@@ -1,0 +1,43 @@
+[tool.poetry]
+name = "evaluation_function"
+version = "0.0.1"
+description = ""
+authors = ["Marcus Messer <m.messer@imperial.ac.uk>"]
+readme = "README.md"
+packages = [{ include = "evaluation_function" }]
+
+[tool.poetry.scripts]
+evaluation_function = "evaluation_function.main:main"
+evaluation_function_dev = "evaluation_function.dev:dev"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+typing_extensions = "^4.12.2"
+lf_toolkit = { git = "https://github.com/lambda-feedback/toolkit-python.git", tag = "v1.0.1", extras = [
+    "ipc",
+] }
+aiohttp = "^3.13.2"
+aiosignal = "^1.4.0"
+attrs = "^25.4.0"
+certifi = "^2025.11.12"
+charset-normalizer = "^3.4.4"
+frozenlist = "^1.8.0"
+idna = "^3.11"
+iniconfig = "^2.3.0"
+multidict = "^6.7.0"
+openai = "^2.7.2"
+packaging = "^25.0"
+pluggy = "^1.6.0"
+python-dotenv = "^1.2.1"
+requests = "^2.32.5"
+tqdm = "^4.67.1"
+urllib3 = "^2.5.0"
+yarl = "^1.22.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.2.2"
+flake8 = "^7.1.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
