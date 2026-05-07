@@ -2,9 +2,6 @@
 
 This function can be used to prompt GPT models by providing prompts in the request parameters. For more information, look at `app/docs`.
 
-## Deployment
-[![Create Release Request](https://img.shields.io/badge/Create%20Release%20Request-blue?style=for-the-badge)](https://github.com/lambda-feedback/chatGPT/issues/new?template=release-request.yml)
-
 ## Table of Contents
 - [Evaluation Function Template Repository](#evaluation-function-template-repository)
   - [Table of Contents](#table-of-contents)
