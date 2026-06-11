@@ -61,7 +61,7 @@ def evaluation_function(response, answer, parameters):
     main_prompt = process_prompt(
         parameters['main_prompt'], question, response, answer)
     default_prompt = process_prompt(
-        parameters['default_prompt'], question, response, answer)
+        parameters.get('correctness_prompt', parameters.get('default_prompt', '')), question, response, answer)
     feedback_prompt = process_prompt(
         parameters['feedback_prompt'], question, response, answer)
     print(main_prompt)
@@ -92,7 +92,7 @@ def evaluation_function(response, answer, parameters):
     output = {"is_correct": is_correct}
 
     # Check if feedback prompt is empty or not. Only populates feedback in 'output' if there is a 'feedback_prompt'.
-    if parameters['feedback_prompt'].strip():
+    if parameters.get('feedback_prompt', '').strip():
         completion_feedback = openai.ChatCompletion.create(
             model=parameters['model'],
             messages=[{"role": "system", "content": " The student response has been judged as " +

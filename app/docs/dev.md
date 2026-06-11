@@ -34,18 +34,19 @@ To successfully run this function, ensure you set your OpenAI API key. The code 
      ```
 
 4. **main_prompt**:
-   - **Description**: Provides context to the AI about the nature of the question and the expected answer(s).
+   - Provides context to the AI about the nature of the question and the expected answer(s).
 
-5. **default_prompt**:
-   - **Description**: A standardised instruction directing the AI to output a boolean representing the correctness of the student's answer.
+5. **correctness_prompt** *(replaces `default_prompt`)*:
+   - A standardised instruction directing the AI to output a boolean representing the correctness of the student's answer.
+   - `default_prompt` is still accepted for backwards compatibility.
 
-6. **feedback_prompt**:
+6. **feedback_prompt** *(optional)*:
    - Guides the AI on how feedback should be given.
    - If left blank, only a binary correctness assessment is returned without detailed feedback.
 
 ### Template variables
 
-All prompt fields (`main_prompt`, `default_prompt`, `feedback_prompt`, `moderator_prompt`) support the following substitution variables:
+All prompt fields (`main_prompt`, `correctness_prompt`, `feedback_prompt`, `moderator_prompt`) support the following substitution variables:
 
 | Variable | Replaced with |
 |---|---|
@@ -64,7 +65,7 @@ parameters = {
     'model': 'gpt-4o-mini',
     'question': 'What is photosynthesis?',
     'main_prompt': "The question asked was: {{question}}. The correct answer is: {{answer}}. Evaluate the student's response: {{response}}.",
-    'default_prompt': "Output a Boolean: True if the student is correct and False if they are incorrect.",
+    'correctness_prompt': "Output a Boolean: True if the student is correct and False if they are incorrect.",
     'feedback_prompt': "You are an AI tutor. Provide feedback based on the student's answer."
 }
 response = "Photosynthesis is the process by which plants convert light energy into chemical energy to fuel their growth."
@@ -90,7 +91,7 @@ The function returns a dictionary with the following structure:
 parameters = {
     'model': 'gpt-4o-mini',
     'main_prompt': "Analyze the student's response about the capital of France. The correct answer is {{answer}}.",
-    'default_prompt': "Output a Boolean: True if the student is correct and False if they are incorrect.",
+    'correctness_prompt': "Output a Boolean: True if the student is correct and False if they are incorrect.",
     'feedback_prompt': "You are an AI tutor. Offer constructive feedback."
 }
 response = "The capital of France is Berlin."
