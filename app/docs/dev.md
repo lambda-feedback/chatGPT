@@ -19,7 +19,15 @@ To successfully run this function, ensure you set your OpenAI API key. The code 
 
 1. **model**:
    - Defines the AI model used for evaluation.
-   - Accepts any OpenAI model string (e.g. `gpt-4o-mini`, `gpt-4o`). Recommended: `gpt-4o-mini`.
+   - Accepts a simple alias (`small`, `medium`, `large`, `reasoning`) or any raw OpenAI model string (e.g. `gpt-4o-mini`).
+   - Alias targets have defaults but can be overridden per-call via `small_model`, `medium_model`, `large_model`, and `reasoning_model` parameters.
+
+   | Alias | Default model | Override parameter |
+   |---|---|---|
+   | `small` | `gpt-4o-mini` | `small_model` |
+   | `medium` | `gpt-4o` | `medium_model` |
+   | `large` | `gpt-4.1` | `large_model` |
+   | `reasoning` | `o4-mini` | `reasoning_model` |
 
 2. **question** *(optional)*:
    - The text of the question being answered by the student.
@@ -61,7 +69,7 @@ Note that an input of a variable called `answer` is also required. This can be a
 
 ```python
 parameters = {
-    'model': 'gpt-4o-mini',
+    'model': 'small',
     'question': 'What is photosynthesis?',
     'main_prompt': "The question asked was: {{question}}. The correct answer is: {{answer}}. Evaluate the student's response: {{response}}.",
     'default_prompt': "Output a Boolean: True if the student is correct and False if they are incorrect.",
@@ -88,7 +96,7 @@ The function returns a dictionary with the following structure:
 
 ```python
 parameters = {
-    'model': 'gpt-4o-mini',
+    'model': 'small',
     'main_prompt': "Analyze the student's response about the capital of France. The correct answer is {{answer}}.",
     'default_prompt': "Output a Boolean: True if the student is correct and False if they are incorrect.",
     'feedback_prompt': "You are an AI tutor. Offer constructive feedback."
