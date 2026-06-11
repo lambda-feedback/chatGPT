@@ -15,8 +15,7 @@ This chatGPT evaluation function is designed to automatically evaluate student r
     - You can embed `{{answer}}`, `{{question}}`, and `{{response}}` as placeholders in your prompts (see **Template variables** below).
 
 - `correctness_prompt` [do not change from default]
-    - To determine the completeness of the response.
-    - It tells GPT to output a Boolean, which marks the student's answer as correct (complete) or incorrect (incomplete).
+    - Instructs GPT to output a boolean: `True` if the student is correct, `False` if not. Leave this as the default.
 
 - `feedback_prompt` [optional]
     - Leave this prompt **blank** if you do not want any textual/qualitative feedback to be given to the student.
