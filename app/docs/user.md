@@ -14,9 +14,8 @@ This chatGPT evaluation function is designed to automatically evaluate student r
     - In this prompt you should explain the question and answer to GPT.
     - You can embed `{{answer}}`, `{{question}}`, and `{{response}}` as placeholders in your prompts (see **Template variables** below).
 
-- `default_prompt` [do not change from default]
-    - To determine the completeness of the response.
-    - It tells GPT to output a Boolean, which marks the student's answer as correct (complete) or incorrect (incomplete).
+- `correctness_prompt` [do not change from default]
+    - Instructs GPT to output a boolean: `True` if the student is correct, `False` if not. Leave this as the default.
 
 - `feedback_prompt` [optional]
     - Leave this prompt **blank** if you do not want any textual/qualitative feedback to be given to the student.
@@ -33,7 +32,7 @@ The cost and performance of LLMs changes by the month, so do not assume that you
 
 ## Template variables
 
-Any prompt field (`main_prompt`, `default_prompt`, `feedback_prompt`, `moderator_prompt`) can include placeholders that are replaced at evaluation time:
+Any prompt field (`main_prompt`, `correctness_prompt`, `feedback_prompt`, `moderator_prompt`) can include placeholders that are replaced at evaluation time:
 
 - `{{answer}}` and `{{response}}` are filled in automatically from the correct answer and the student's submission.
 - `{{question}}` is filled in from the `question` parameter — you must set this in the UI for it to have a value.
