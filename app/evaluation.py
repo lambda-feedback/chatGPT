@@ -5,6 +5,13 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+MODEL_ALIASES = {
+    "small":     "gpt-4o-mini",
+    "medium":    "gpt-4o",
+    "large":     "gpt-4.1",
+    "reasoning": "o4-mini",
+}
+
 # A basic way to call ChatGPT from the Lambda Feedback platform
 
 
@@ -49,6 +56,8 @@ def evaluation_function(response, answer, parameters):
 
     openai.api_key = os.environ.get("OPENAI_API_KEY")
 
+    model = MODEL_ALIASES.get(parameters['model'], parameters['model'])
+
     question = parameters.get("question")
     moderator_prompt = parameters.get(
         "moderator_prompt",
@@ -69,7 +78,7 @@ def evaluation_function(response, answer, parameters):
 
     # Call openAI API for moderation
     moderation_boolean = openai.ChatCompletion.create(
-        model=parameters['model'],
+        model=model,
         messages=[{"role": "system", "content": moderator_prompt},
                   {"role": "user", "content": response}])
 
@@ -81,7 +90,7 @@ def evaluation_function(response, answer, parameters):
 
     # Call openAI API for boolean
     completion_boolean = openai.ChatCompletion.create(
-        model=parameters['model'],
+        model=model,
         messages=[
             {"role": "system", "content": main_prompt + " " + default_prompt}])
 
@@ -94,7 +103,7 @@ def evaluation_function(response, answer, parameters):
     # Check if feedback prompt is empty or not. Only populates feedback in 'output' if there is a 'feedback_prompt'.
     if parameters['feedback_prompt'].strip():
         completion_feedback = openai.ChatCompletion.create(
-            model=parameters['model'],
+            model=model,
             messages=[{"role": "system", "content": " The student response has been judged as " +
                        is_correct_str + main_prompt + " " + feedback_prompt + "# Reminder: the student response is "+is_correct_str}])
 

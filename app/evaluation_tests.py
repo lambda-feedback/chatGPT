@@ -6,11 +6,11 @@ import os
 load_dotenv()
 
 try:
-    from .evaluation import evaluation_function
+    from .evaluation import evaluation_function, MODEL_ALIASES
 except ImportError:
-    from evaluation import evaluation_function
+    from evaluation import evaluation_function, MODEL_ALIASES
 
-model = 'gpt-4o-mini'
+model = 'small'
 
 default_prompt = "Output a Boolean: True if the student is correct and False if the student is incorrect. Be reasonable."
 feedback_prompt = "Give objective and constructive feedback. Don't give the correct answer away. Short answer # Student reponse: {{response}}. # Closing remark: Keep it short."
@@ -88,6 +88,18 @@ class TestEvaluationFunction(unittest.TestCase):
                       'default_prompt': default_prompt}
         output = evaluation_function(response, answer, parameters)
         self.assertEqual(output["is_correct"], True)
+
+
+class TestModelAliases(unittest.TestCase):
+
+    def test_all_aliases_defined(self):
+        for name in ('small', 'medium', 'large', 'reasoning'):
+            self.assertIn(name, MODEL_ALIASES)
+            self.assertTrue(MODEL_ALIASES[name])
+
+    def test_raw_model_string_passthrough(self):
+        raw = 'gpt-4o-mini'
+        self.assertEqual(MODEL_ALIASES.get(raw, raw), raw)
 
 
 if __name__ == "__main__":
