@@ -20,13 +20,14 @@ To successfully run this function, ensure you set your OpenAI API key. The code 
 1. **model**:
    - Defines the AI model used for evaluation.
    - Accepts a simple alias (`small`, `medium`, `large`, `reasoning`) or any raw OpenAI model string (e.g. `gpt-4o-mini`).
+   - Alias targets have defaults but can be overridden per-call via `small_model`, `medium_model`, `large_model`, and `reasoning_model` parameters.
 
-   | Alias | Model |
-   |---|---|
-   | `small` | `gpt-4o-mini` |
-   | `medium` | `gpt-4o` |
-   | `large` | `gpt-4.1` |
-   | `reasoning` | `o4-mini` |
+   | Alias | Default model | Override parameter |
+   |---|---|---|
+   | `small` | `gpt-4o-mini` | `small_model` |
+   | `medium` | `gpt-4o` | `medium_model` |
+   | `large` | `gpt-4.1` | `large_model` |
+   | `reasoning` | `o4-mini` | `reasoning_model` |
 
 2. **question** *(optional)*:
    - The text of the question being answered by the student.

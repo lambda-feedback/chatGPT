@@ -7,12 +7,14 @@ This chatGPT evaluation function is designed to automatically evaluate student r
 - `model`
     - Use a simple alias: `small`, `medium`, `large`, or `reasoning`. You can also pass any raw OpenAI model string directly (e.g. `gpt-4o-mini`).
 
-    | Alias | Model | When to use |
+    | Alias | Default model | When to use |
     |---|---|---|
     | `small` | `gpt-4o-mini` | Fast and cheap; good for most questions |
     | `medium` | `gpt-4o` | Better reasoning; use for nuanced marking |
     | `large` | `gpt-4.1` | Most capable; use for complex evaluation |
     | `reasoning` | `o4-mini` | Structured reasoning; use for multi-step problems |
+
+    To override a default, add the corresponding parameter: `small_model`, `medium_model`, `large_model`, or `reasoning_model`.
 
 - `question` [optional]
     - The text of the question being answered. Set this if you want to reference the question wording inside your prompts using `{{question}}`.

@@ -6,9 +6,9 @@ import os
 load_dotenv()
 
 try:
-    from .evaluation import evaluation_function, MODEL_ALIASES
+    from .evaluation import evaluation_function, resolve_model
 except ImportError:
-    from evaluation import evaluation_function, MODEL_ALIASES
+    from evaluation import evaluation_function, resolve_model
 
 model = 'small'
 
@@ -92,14 +92,17 @@ class TestEvaluationFunction(unittest.TestCase):
 
 class TestModelAliases(unittest.TestCase):
 
-    def test_all_aliases_defined(self):
-        for name in ('small', 'medium', 'large', 'reasoning'):
-            self.assertIn(name, MODEL_ALIASES)
-            self.assertTrue(MODEL_ALIASES[name])
+    def test_default_aliases(self):
+        self.assertEqual(resolve_model('small',     {}), 'gpt-4o-mini')
+        self.assertEqual(resolve_model('medium',    {}), 'gpt-4o')
+        self.assertEqual(resolve_model('large',     {}), 'gpt-4.1')
+        self.assertEqual(resolve_model('reasoning', {}), 'o4-mini')
+
+    def test_alias_override_via_parameters(self):
+        self.assertEqual(resolve_model('small', {'small_model': 'gpt-4.1-nano'}), 'gpt-4.1-nano')
 
     def test_raw_model_string_passthrough(self):
-        raw = 'gpt-4o-mini'
-        self.assertEqual(MODEL_ALIASES.get(raw, raw), raw)
+        self.assertEqual(resolve_model('gpt-4o-mini', {}), 'gpt-4o-mini')
 
 
 if __name__ == "__main__":

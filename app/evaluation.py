@@ -5,14 +5,17 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-MODEL_ALIASES = {
-    "small":     "gpt-4o-mini",
-    "medium":    "gpt-4o",
-    "large":     "gpt-4.1",
-    "reasoning": "o4-mini",
-}
-
 # A basic way to call ChatGPT from the Lambda Feedback platform
+
+
+def resolve_model(model_str, parameters):
+    aliases = {
+        "small":     parameters.get("small_model",     "gpt-4o-mini"),
+        "medium":    parameters.get("medium_model",    "gpt-4o"),
+        "large":     parameters.get("large_model",     "gpt-4.1"),
+        "reasoning": parameters.get("reasoning_model", "o4-mini"),
+    }
+    return aliases.get(model_str, model_str)
 
 
 def process_prompt(prompt, question, response, answer):
@@ -56,7 +59,7 @@ def evaluation_function(response, answer, parameters):
 
     openai.api_key = os.environ.get("OPENAI_API_KEY")
 
-    model = MODEL_ALIASES.get(parameters['model'], parameters['model'])
+    model = resolve_model(parameters['model'], parameters)
 
     question = parameters.get("question")
     moderator_prompt = parameters.get(
