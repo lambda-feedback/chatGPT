@@ -1,6 +1,5 @@
 import os
-import openai
-import json
+from openai import OpenAI
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -8,10 +7,9 @@ load_dotenv()
 # A basic way to call ChatGPT from the Lambda Feedback platform
 
 
-def process_prompt(prompt, question, response, answer):
+def process_prompt(prompt, question, answer):
     prompt = prompt.replace("{{answer}}", str(answer))
     prompt = prompt.replace("{{question}}", str(question) or "")
-    prompt = prompt.replace("{{response}}", str(response) or "")
     prompt = prompt.strip()
     if prompt and not prompt.endswith('.'):
         prompt += '.'
@@ -47,7 +45,7 @@ def evaluation_function(response, answer, parameters):
     to output the evaluation response.
     """
 
-    openai.api_key = os.environ.get("OPENAI_API_KEY")
+    client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
     question = parameters.get("question")
     moderator_prompt = parameters.get(
@@ -56,47 +54,43 @@ def evaluation_function(response, answer, parameters):
     )
 
     # Making sure that each prompt ends with a full stop (prevents gpt getting confused when concatenated)
-    moderator_prompt = process_prompt(
-        moderator_prompt, question, response, answer)
-    main_prompt = process_prompt(
-        parameters['main_prompt'], question, response, answer)
-    default_prompt = process_prompt(
-        parameters['default_prompt'], question, response, answer)
-    feedback_prompt = process_prompt(
-        parameters['feedback_prompt'], question, response, answer)
+    moderator_prompt = process_prompt(moderator_prompt, question, answer)
+    main_prompt = process_prompt(parameters['main_prompt'], question, answer)
+    default_prompt = process_prompt(parameters['default_prompt'], question, answer)
+    feedback_prompt = process_prompt(parameters['feedback_prompt'], question, answer)
     print(main_prompt)
     print(feedback_prompt)
 
     # Call openAI API for moderation
-    moderation_boolean = openai.ChatCompletion.create(
+    moderation_boolean = client.chat.completions.create(
         model=parameters['model'],
         messages=[{"role": "system", "content": moderator_prompt},
                   {"role": "user", "content": response}])
 
-    pass_moderation = moderation_boolean.choices[0].message.content.strip(
-    ) == "True"
+    pass_moderation = moderation_boolean.choices[0].message.content.strip() == "True"
     if not pass_moderation:
         print("Failed moderation")
         return {"is_correct": False, "feedback": "Response did not pass moderation."}
 
     # Call openAI API for boolean
-    completion_boolean = openai.ChatCompletion.create(
+    completion_boolean = client.chat.completions.create(
         model=parameters['model'],
         messages=[
-            {"role": "system", "content": main_prompt + " " + default_prompt}])
+            {"role": "system", "content": main_prompt + " " + default_prompt},
+            {"role": "user", "content": response}])
 
-    is_correct = completion_boolean.choices[0].message.content.strip(
-    ) == "True"
+    is_correct = completion_boolean.choices[0].message.content.strip() == "True"
     is_correct_str = "correct." if is_correct else "incorrect."
 
     output = {"is_correct": is_correct}
 
     # Check if feedback prompt is empty or not. Only populates feedback in 'output' if there is a 'feedback_prompt'.
     if parameters['feedback_prompt'].strip():
-        completion_feedback = openai.ChatCompletion.create(
+        completion_feedback = client.chat.completions.create(
             model=parameters['model'],
-            messages=[{"role": "system", "content": " The student response has been judged as " +
-                       is_correct_str + main_prompt + " " + feedback_prompt + "# Reminder: the student response is "+is_correct_str}])
+            messages=[
+                {"role": "system", "content": f"{main_prompt} The student response has been judged as {is_correct_str} {feedback_prompt}"},
+                {"role": "user", "content": response}])
 
         feedback = completion_feedback.choices[0].message.content.strip()
         print(feedback)
