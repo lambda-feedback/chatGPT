@@ -14,6 +14,9 @@ This function can be used to prompt GPT models by providing prompts in the reque
     - [GitHub Actions](#github-actions)
   - [Pre-requisites](#pre-requisites)
 
+## Deployment
+[![Create Release Request](https://img.shields.io/badge/Create%20Release%20Request-blue?style=for-the-badge)](https://github.com/lambda-feedback/chatGPT/issues/new?template=release-request.yml)
+
 ## Repository Structure
 
 ```bash
