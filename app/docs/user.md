@@ -1,52 +1,67 @@
 # chatGPT
 
-## What does it do?
-This chatGPT evaluation function is designed to automatically evaluate student responses to questions. It uses the OpenAI API to determine the correctness (true/false) of the student's answer and can also provide them with feedback.
+This evaluation function uses the OpenAI API to determine the correctness (true/false) of a student's response to a question. It can also provide written feedback.
 
-## What does the teacher need to input?
-- `model`
-    - Suggest (July 2025), `gpt-4o-mini` or `gpt-4.1-mini`.
+The cost and performance of LLMs changes frequently, so prompts and model choices should be considered experimental and reviewed regularly.
 
-- `question` [optional]
-    - The text of the question being answered. Set this if you want to reference the question wording inside your prompts using `{{question}}`.
+## Inputs
 
-- `main_prompt`
-    - In this prompt you should explain the question and answer to GPT.
-    - You can embed `{{answer}}`, `{{question}}`, and `{{response}}` as placeholders in your prompts (see **Template variables** below).
+### Required parameters
 
-- `default_prompt` [do not change from default]
-    - To determine the completeness of the response.
-    - It tells GPT to output a Boolean, which marks the student's answer as correct (complete) or incorrect (incomplete).
+#### `main_prompt`
 
-- `feedback_prompt` [optional]
-    - Leave this prompt **blank** if you do not want any textual/qualitative feedback to be given to the student.
-    - Fill in this prompt to tell GPT how to give written feedback to the student. Examples of things you may want to include in your `feedback_prompt`:
-        - `Give the student objective and constructive feedback on their answer in first person.`
-        - `If the student is incorrect, provide feedback/hints to help them, but do not reveal the answer.`
+Provides context to the AI about the question and the expected answer. Explain what the correct answer is and what criteria should be used to judge the student's response.
 
-- `moderator_prompt` [optional, advanced]
-    - By default, the system automatically checks whether a student response is attempting to manipulate the AI evaluator (prompt injection). A student response that tries to dictate feedback or override the marking will be automatically marked as incorrect with the message "Response did not pass moderation."
-    - You do not need to set this — the built-in default handles common manipulation attempts.
-    - You can override it with a custom prompt if you have specific moderation needs.
+You can embed template variables (see **Template variables** below) to include the answer or question text in your prompt.
 
-The cost and performance of LLMs changes by the month, so do not assume that your prompts and model choice are good in the long term. Approaches with LLMs should be considered experimental.
+#### `default_prompt`
 
-## Template variables
+Instructs the AI to output a Boolean representing whether the student's response is correct. Do not change this from its default value.
+
+### Optional parameters
+
+#### `model`
+
+The OpenAI model to use for evaluation. Recommended models change over time — check the [OpenAI model documentation](https://platform.openai.com/docs/models) for current recommendations. Recent options include `gpt-4o-mini` and `gpt-4.1-mini`.
+
+#### `question`
+
+The text of the question being answered. When provided, it can be referenced in prompt templates using `{{question}}`.
+
+#### `feedback_prompt`
+
+Guides the AI on how to give written feedback to the student.
+
+Leave this blank if you do not want any textual feedback returned. When set, the feedback is included in the evaluation output. Examples of things you may want to include:
+
+- `Give the student objective and constructive feedback on their answer in first person.`
+- `If the student is incorrect, provide feedback/hints to help them, but do not reveal the answer.`
+
+#### `moderator_prompt`
+
+A prompt instructing the AI to check whether the student's response is a legitimate attempt to answer the question, rather than an attempt to manipulate the evaluator (prompt injection).
+
+If omitted, a built-in default handles common manipulation attempts. You do not need to set this unless you have specific moderation requirements.
+
+If moderation fails, the function immediately returns:
+
+```python
+{"is_correct": False, "feedback": "Response did not pass moderation."}
+```
+
+### Template variables
 
 Any prompt field (`main_prompt`, `default_prompt`, `feedback_prompt`, `moderator_prompt`) can include placeholders that are replaced at evaluation time:
 
-- `{{answer}}` and `{{response}}` are filled in automatically from the correct answer and the student's submission.
-- `{{question}}` is filled in from the `question` parameter — you must set this in the UI for it to have a value.
+| Variable | Replaced with |
+|---|---|
+| `{{answer}}` | The correct answer supplied to the function |
+| `{{question}}` | The value of the `question` parameter (if provided) |
 
-**Example** — referencing the student's response in feedback:
+### Examples
 
-**Feedback Prompt**:
-> Give objective feedback. The student wrote: {{response}}. If they are incorrect, give a hint without revealing the answer.
+#### Technical question, no feedback
 
-## Usage examples
-Each example below demonstrates the potential usage of `main_prompt` and `feedback_prompt` for different questions.
-
-### Technical question, for correctness and with no feedback.
 **Main Prompt**:
 > In this question, the student is asked to make a comment about the behaviour of a partial sum. The correct answer is 'fast convergence'. Accept any paraphrasing/equivalent answers. To be correct, they must mention both aspects (fast and convergence).
 
@@ -55,7 +70,8 @@ Each example below demonstrates the potential usage of `main_prompt` and `feedba
 
 <img src="https://github.com/lambda-feedback/chatGPT/assets/138524447/af083bff-fade-4186-89aa-bc0b7f48ce0d" width="450">
 
-### Essay with feedback.
+#### Essay with feedback
+
 **Main Prompt**:
 > Students should write an essay for GCSE English ... [details to go here]
 

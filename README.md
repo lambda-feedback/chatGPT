@@ -2,41 +2,9 @@
 
 This function can be used to prompt GPT models by providing prompts in the request parameters. For more information, look at `app/docs`.
 
-## Table of Contents
-- [Evaluation Function Template Repository](#evaluation-function-template-repository)
-  - [Table of Contents](#table-of-contents)
-  - [Repository Structure](#repository-structure)
-  - [Usage](#usage)
-    - [Getting Started](#getting-started)
-  - [How it works](#how-it-works)
-    - [Docker & Amazon Web Services (AWS)](#docker--amazon-web-services-aws)
-    - [Middleware Functions](#middleware-functions)
-    - [GitHub Actions](#github-actions)
-  - [Pre-requisites](#pre-requisites)
-
 ## Deployment
 [![Create Release Request](https://img.shields.io/badge/Create%20Release%20Request-blue?style=for-the-badge)](https://github.com/lambda-feedback/chatGPT/issues/new?template=release-request.yml)
 
-## Repository Structure
-
-```bash
-app/
-    __init__.py
-    evaluation.py # Script containing the main evaluation_function
-    docs.md # Documentation page for this function (required)
-    evaluation_tests.py # Unittests for the main evaluation_function
-    requirements.txt # list of packages needed for algorithm.py
-    Dockerfile # for building whole image to deploy to AWS
-
-.github/
-    workflows/
-        test-and-deploy.yml # Testing and deployment pipeline
-
-config.json # Specify the name of the evaluation function in this file
-.gitignore
-```
-
-## Usage
 
 ### Getting Started
 
@@ -91,4 +59,3 @@ Although all programming can be done through the GitHub interface, it is recomme
 
 - A code editor such as Atom, VS Code, or Sublime.
 
-Copy this template over by clicking **Use this template** button found in the repository on GitHub. Save it to the `lambda-feedback` Organisation.

@@ -1,4 +1,4 @@
-# chatGPT Evaluation Function
+# chatGPT
 
 ## Overview
 This chatGPT evaluation function is designed to automatically evaluate student responses to questions. It uses the OpenAI API to determine the correctness (true/false) of the student's answer and can also provide them with feedback.
@@ -51,7 +51,6 @@ All prompt fields (`main_prompt`, `default_prompt`, `feedback_prompt`, `moderato
 |---|---|
 | `{{answer}}` | The correct answer supplied to the function |
 | `{{question}}` | The value of the `question` parameter (if provided) |
-| `{{response}}` | The student's response |
 
 Example: setting `main_prompt` to `"The question is {{question}}. The correct answer is {{answer}}."` will produce a fully populated prompt at evaluation time.
 
