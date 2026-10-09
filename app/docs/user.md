@@ -1,6 +1,6 @@
 # chatGPT
 
-This evaluation function uses the OpenAI API to determine the correctness (true/false) of a student's response to a question. It can also provide written feedback.
+This evaluation function uses the OpenRouter API to determine the correctness (true/false) of a student's response to a question. It can also provide written feedback.
 
 The cost and performance of LLMs changes frequently, so prompts and model choices should be considered experimental and reviewed regularly.
 
@@ -22,7 +22,7 @@ Instructs the AI to output a Boolean representing whether the student's response
 
 #### `model`
 
-The OpenAI model to use for evaluation. Recommended models change over time — check the [OpenAI model documentation](https://platform.openai.com/docs/models) for current recommendations. Recent options include `gpt-4o-mini` and `gpt-4.1-mini`.
+The model to use for evaluation, as an OpenRouter model id in `provider/model` form (e.g. `openai/gpt-4o-mini`, `openai/gpt-4.1-mini`). See the [OpenRouter model list](https://openrouter.ai/models) for available models. A name without a provider prefix (e.g. `gpt-4o-mini`) is treated as an OpenAI model.
 
 #### `question`
 

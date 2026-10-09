@@ -1,7 +1,7 @@
 # chatGPT
 
 ## Overview
-This chatGPT evaluation function is designed to automatically evaluate student responses to questions. It uses the OpenAI API to determine the correctness (true/false) of the student's answer and can also provide them with feedback.
+This chatGPT evaluation function is designed to automatically evaluate student responses to questions. It uses the OpenRouter API (an OpenAI-compatible gateway to many model providers) to determine the correctness (true/false) of the student's answer and can also provide them with feedback.
 
 Evaluation runs in three stages:
 1. **Moderation** — checks the student response is not attempting to manipulate the AI evaluator.
@@ -11,7 +11,7 @@ Evaluation runs in three stages:
 If moderation fails, stages 2 and 3 are skipped and the response is immediately marked incorrect.
 
 ## Setup
-To successfully run this function, ensure you set your OpenAI API key. The code fetches this key from environment variables, so ensure it's set up in your environment or `.env` file.
+To successfully run this function, ensure you set your OpenRouter API key as `OPENROUTER_API_KEY`. The code fetches this key from environment variables, so ensure it's set up in your environment or `.env` file.
 
 ## Inputs
 
@@ -19,7 +19,8 @@ To successfully run this function, ensure you set your OpenAI API key. The code 
 
 1. **model**:
    - Defines the AI model used for evaluation.
-   - Accepts any OpenAI model string (e.g. `gpt-4o-mini`, `gpt-4o`). Recommended: `gpt-4o-mini`.
+   - Accepts any OpenRouter model id in `provider/model` form (e.g. `openai/gpt-4o-mini`, `anthropic/claude-sonnet-4.5`). Recommended: `openai/gpt-4o-mini`.
+   - Bare names without a provider prefix (e.g. `gpt-4o-mini`) are treated as OpenAI models (`openai/gpt-4o-mini`) for backwards compatibility.
 
 2. **question** *(optional)*:
    - The text of the question being answered by the student.

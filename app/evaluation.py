@@ -1,7 +1,7 @@
 import os
 
 import json
-from openai import OpenAI
+from openai import OpenAI, BadRequestError
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -69,6 +69,16 @@ def _answer_code(answer) -> str:
     payload the same way the submission is unwrapped."""
     return _unwrap_payload(answer)[0]
 
+def _resolve_model(model: str) -> str:
+    """OpenRouter needs provider-prefixed ids; treat bare names as OpenAI models."""
+    return model if "/" in model else f"openai/{model}"
+
+def _is_content_filter_error(err: BadRequestError) -> bool:
+    """True when the upstream provider (e.g. Azure) blocked the prompt with its own content filter."""
+    body = err.body if isinstance(err.body, dict) else {}
+    metadata = body.get("metadata") or {}
+    return err.code == "content_filter" or metadata.get("provider_error_code") == "content_filter"
+
 def evaluation_function(response, answer, parameters):
     """
     Function used to evaluate a student response.
@@ -100,7 +110,11 @@ def evaluation_function(response, answer, parameters):
     answer = _answer_code(answer)
     response, _ = _resolve_submission(response, parameters)
 
-    client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
+    client = OpenAI(
+        base_url="https://openrouter.ai/api/v1",
+        api_key=os.environ.get("OPENROUTER_API_KEY"),
+    )
+    model = _resolve_model(parameters['model'])
 
     question = parameters.get("question")
     moderator_prompt = parameters.get(
@@ -116,20 +130,27 @@ def evaluation_function(response, answer, parameters):
     print(main_prompt)
     print(feedback_prompt)
 
-    # Call openAI API for moderation
-    moderation_boolean = client.chat.completions.create(
-        model=parameters['model'],
-        messages=[{"role": "system", "content": moderator_prompt},
-                  {"role": "user", "content": response}])
+    # Call OpenRouter API for moderation
+    # A provider-side content filter block is treated as a failed moderation
+    try:
+        moderation_boolean = client.chat.completions.create(
+            model=model,
+            messages=[{"role": "system", "content": moderator_prompt},
+                      {"role": "user", "content": response}])
+        pass_moderation = moderation_boolean.choices[0].message.content.strip() == "True"
+    except BadRequestError as err:
+        if not _is_content_filter_error(err):
+            raise
+        print("Blocked by provider content filter")
+        pass_moderation = False
 
-    pass_moderation = moderation_boolean.choices[0].message.content.strip() == "True"
     if not pass_moderation:
         print("Failed moderation")
         return {"is_correct": False, "feedback": "Response did not pass moderation."}
 
-    # Call openAI API for boolean
+    # Call OpenRouter API for boolean
     completion_boolean = client.chat.completions.create(
-        model=parameters['model'],
+        model=model,
         messages=[
             {"role": "system", "content": main_prompt + " " + default_prompt},
             {"role": "user", "content": response}])
@@ -142,7 +163,7 @@ def evaluation_function(response, answer, parameters):
     # Check if feedback prompt is empty or not. Only populates feedback in 'output' if there is a 'feedback_prompt'.
     if parameters['feedback_prompt'].strip():
         completion_feedback = client.chat.completions.create(
-            model=parameters['model'],
+            model=model,
             messages=[
                 {"role": "system", "content": f"{main_prompt} The student response has been judged as {is_correct_str} {feedback_prompt}"},
                 {"role": "user", "content": response}])
